@@ -1,4 +1,4 @@
-dynRB_Snc <-
+dynRB_Vnc <-
 function(A=A,steps=201,graphic=FALSE){
   #aggregation has to be one of "product", "mean", "gmean"
   #tranSLate aggregation

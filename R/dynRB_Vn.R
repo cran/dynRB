@@ -1,4 +1,4 @@
-dynRB_Sn <-
+dynRB_Vn <-
 function(A=A,steps=201){
   #aggregation has to be one of "product", "mean", "gmean"
   #tranSLate aggregation

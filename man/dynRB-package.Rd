@@ -12,8 +12,8 @@ The package DynRB improves the concept of multivariate range boxes, which is hig
 \tabular{ll}{
 Package: \tab dynRB\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
-Date: \tab 2015-05-06\cr
+Version: \tab 0.2\cr
+Date: \tab 2015-05-15\cr
 }
 }
 \author{
@@ -28,5 +28,6 @@ Will be added as soon as the corresponding paper describing the approach is acce
 # example function dynRB_SQac
 # for reliable results use steps = 201
 data(finch2)
-r<-dynRB_SQac(finch2, steps = 101)  
+r<-dynRB_VPac(finch2, steps = 101)  
 }
+

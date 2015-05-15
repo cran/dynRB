@@ -1,14 +1,14 @@
-\name{dynRB_Sn}
-\alias{dynRB_Sn}
+\name{dynRB_VPac}
+\alias{dynRB_VPac}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Relative Dynamic Range Box size per dimension and object
+Corrected size and pairwise overlap
 }
 \description{
-Function returns Dynamic Range Box size of each dimension \eqn{n}. Number of dynamic range boxes (\code{steps}) can be adjusted. Default: \code{steps = 201}
+Function returns adjusted size and adjusted pairwise overlaps of niches or trait-spaces. Size or overlaps of dimensions can be aggregated by using either "product", "mean" or "geometric mean" as aggregation method. The results obtained by using the product are automatically printed. Number of dynamic range boxes (\code{steps}) can be adjusted. Default: \code{steps = 201}
 }
 \usage{
-dynRB_Sn(A = A, steps = 201)
+dynRB_VPac(A = A, steps = 201, graphic = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,12 +18,16 @@ Data frame, where the first column is a character vector and the other columns a
   \item{steps}{
 Number of range boxes. Default: \code{steps = 201}
 }
+  \item{graphic}{
+If \code{TRUE}, graphics are shown. If \code{FALSE}, no graphics are shown. Default: \code{graphic = FALSE}
+}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-Data frame containing the summarized niche length for each object and dimension.
+Data frame containing the summarized adjusted niche overlap (and adjusted volume) for each pair of objects aggregated by all three possible
+choices (i.e. product, mean, geometric mean).
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -47,12 +51,10 @@ Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-# example function dynRB_Sn
+# example function dynRB_VPac
 # for reliable results use steps = 201
 data(finch2)
-r<-dynRB_Sn(finch2, steps = 101)
+r<-dynRB_VPac(finch2, steps = 101)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{ ~kwd1 }
 \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

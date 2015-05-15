@@ -1,5 +1,5 @@
-\name{dynRB_SQa}
-\alias{dynRB_SQa}
+\name{dynRB_VPa}
+\alias{dynRB_VPa}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Size and pairwise overlap
@@ -8,7 +8,7 @@ Size and pairwise overlap
 Function returns size and pairwise overlaps of niches or trait-spaces. Size or overlaps of dimensions can be aggregated by using either "product", "mean" or "geometric mean" as aggregation method. The results obtained by using the product are automatically printed. Number of dynamic range boxes (\code{steps}) can be adjusted. Default: \code{steps = 201}
 }
 \usage{
-dynRB_SQa(A = A, steps = 201, graphic = FALSE)
+dynRB_VPa(A = A, steps = 201, graphic = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -51,10 +51,10 @@ Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-# example function dynRB_SQa
+# example function dynRB_VPa
 # for reliable results use steps = 201
 data(finch2)
-r<-dynRB_SQa(finch2, steps = 101)
+r<-dynRB_VPa(finch2, steps = 101)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
