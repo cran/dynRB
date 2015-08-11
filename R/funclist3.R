@@ -1,119 +1,45 @@
-
-
 funclist3<-list(
-  portionAinB2_full_graphics=function(S1,S2,steps=101){
+  portionAinB2_full=function(S1,S2,steps=101,alpha_grid){
     steps0<-steps
-    if(ncol(S1)>1){
-      funclist2$portionAinB2_full_severalcol_graphics(S1,S2,steps=steps0)
-    }else{
-      funclist2$portionAinB2_full_onecolumn_graphics(S1,S2,steps=steps0)
-    }
+    alpha_grid0<-alpha_grid
+    funclist2$portionAinB2_full_severalcol(S1,S2,steps=steps0,alpha_grid=alpha_grid0)
   },
-  portionAinB2_full_graphics_off=function(S1,S2,steps=101){
+  volumeA2_full=function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
     steps0<-steps
-    if(ncol(S1)>1){
-      funclist2$portionAinB2_full_severalcol_graphics_off(S1,S2,steps=steps0)
-    }else{
-      funclist2$portionAinB2_full_onecolumn_graphics_off(S1,S2,steps=steps0)
-    }
+    alpha0_grid<-alpha_grid
+    funclist2$volumeA2_full_severalcol(S1,S2,steps=steps0,alpha_grid=alpha0_grid  )
   },
-  volumeA2_full_graphics=function(S1,S2,steps=101){
-    steps0<-steps
-    if(ncol(S1)>1){
-      funclist2$volumeA2_full_severalcol_graphics(S1,S2,steps=steps0)
-    }else{
-      funclist2$volumeA2_full_onecol_graphics(S1,S2,steps=steps0)
-    }
-  },
-  volumeA2_full_graphics_off=function(S1,S2,steps=101){
-    steps0<-steps
-    if(ncol(S1)>1){
-      funclist2$volumeA2_full_severalcol_graphics_off(S1,S2,steps=steps0)
-    }else{
-      funclist2$volumeA2_full_onecol_graphics_off(S1,S2,steps=steps0)
-    }
-  },
-  portionAinB_full_graphics=function(S1,S2,steps=101,aggregation="product"){
-    steps0<-steps
-    agg<-aggregation
-    if(ncol(S1)>1){
-      funclist2$portionAinB_full_severalcol_graphics(S1,S2,steps=steps0,aggregation=agg)
-    }else{
-      funclist2$portionAinB_full_onecolumn_graphics(S1,S2,steps=steps0,aggregation=agg)
-    }
-  },
-  portionAinB_full_graphics_off=function(S1,S2,steps=101,aggregation="product"){
-    steps0<-steps
-    agg<-aggregation
-    if(ncol(S1)>1){
-      funclist2$portionAinB_full_severalcol_graphics_off(S1,S2,steps=steps0,aggregation=agg)
-    }else{
-      funclist2$portionAinB_full_onecolumn_graphics_off(S1,S2,steps=steps0,aggregation=agg)
-    }
-  },
-  portionAinB_coordinates_full_graphics=function(S1,S2,steps=101){
+  portionAinB_coordinates_full=function(S1,S2,steps=101 ){ 
     nt<-ncol(S1)
     integral_coord<-rep(0,length=nt)
     hilf<-function(x1,x2,steps){
-      r<-funclist2$portionAinB_full_onecolumn_graphics(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps)
+      r<-funclist2$portionAinB_full_onecolumn(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
       return(r$integral_approx)
     }
+    hilf2<-function(x1,x2,steps){
+      r<-funclist2$portionAinB_full_onecolumn(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
+      return(r$overlap)
+    }
     integral_coord<-mapply(hilf, x1=S1, x2=S2, MoreArgs =list(steps=steps))
+    plot_data_overlap<-mapply(hilf2, x1=S1, x2=S2, MoreArgs =list(steps=steps))
     alpha_grid<-seq(0,1,length=steps)[1:(steps-1)]
-    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord)
+    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord,plot_data_overlap=plot_data_overlap)
     return(erg)
   },
-  portionAinB_coordinates_full_graphics_off=function(S1,S2,steps=101){
-    nt<-ncol(S1)
-    integral_coord<-rep(0,length=nt)
-    hilf<-function(x1,x2,steps){
-      r<-funclist2$portionAinB_full_onecolumn_graphics_off(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps)
-      return(r$integral_approx)
-    }
-    integral_coord<-mapply(hilf, x1=S1, x2=S2, MoreArgs =list(steps=steps))
-    alpha_grid<-seq(0,1,length=steps)[1:(steps-1)]
-    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord)
-    return(erg)
-  },
-  volumeA_full_graphics=function(S1,S2,steps=101,aggregation="product"){
-    steps0<-steps
-    agg<-aggregation
-    if(ncol(S1)>1){
-      funclist2$volumeA_full_severalcol_graphics(S1,S2,steps=steps0,aggregation=agg)
-    }else{
-      funclist2$volumeA_full_onecol_graphics(S1,S2,steps=steps0,aggregation=agg)
-    }
-  },
-  volumeA_full_graphics_off=function(S1,S2,steps=101,aggregation="product"){
-    steps0<-steps
-    agg<-aggregation
-    if(ncol(S1)>1){
-      funclist2$volumeA_full_severalcol_graphics_off(S1,S2,steps=steps0,aggregation=agg)
-    }else{
-      funclist2$volumeA_full_onecol_graphics_off(S1,S2,steps=steps0,aggregation=agg)
-    }
-  },
-  volumeA_coordinates_full_graphics_off=function(S1,S2,steps=101){
+  volumeA_coordinates_full=function(S1,S2,steps=101 ){ 
     nt<-ncol(S1)
     hilf<-function(x1,x2,steps){
-      r<-funclist2$volumeA_full_onecol_graphics_off(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps)
+      r<-funclist2$volumeA_full_onecol(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
       return(r$integral_approx)
     }
+    hilf2<-function(x1,x2,steps){
+      r<-funclist2$volumeA_full_onecol(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
+      return(r$volume)
+    }
     integral_coord<-mapply(hilf, x1=S1, x2=S2, MoreArgs =list(steps=steps))
+    plot_volume<-mapply(hilf2, x1=S1, x2=S2, MoreArgs =list(steps=steps))
     alpha_grid<-seq(0,1,length=steps)    
-    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord)
-    return(erg)
-  },
-  volumeA_coordinates_full_graphics=function(S1,S2,steps=101){
-    nt<-ncol(S1)
-    hilf<-function(x1,x2,steps){
-      r<-funclist2$volumeA_full_onecol_graphics(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps)
-      return(r$integral_approx)
-    }
-    integral_coord<-mapply(hilf, x1=S1, x2=S2, MoreArgs =list(steps=steps))
-    alpha_grid<-seq(0,1,length=steps)    
-    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord)
+    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord,plot_volume=plot_volume)
     return(erg)
   }
 )
-

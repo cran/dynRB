@@ -8,7 +8,7 @@ Size and pairwise overlap
 Function returns size and pairwise overlaps of niches or trait-spaces. Size or overlaps of dimensions can be aggregated by using either "product", "mean" or "geometric mean" as aggregation method. The results obtained by using the product are automatically printed. Number of dynamic range boxes (\code{steps}) can be adjusted. Default: \code{steps = 201}
 }
 \usage{
-dynRB_VPa(A = A, steps = 201, graphic = FALSE)
+dynRB_VPa(A = A, steps = 201, correlogram = FALSE, row_col = c(2, 2))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,8 +18,11 @@ Data frame, where the first column is a character vector and the other columns a
   \item{steps}{
 Number of range boxes. Default: \code{steps = 201} 
 }
-  \item{graphic}{
-If \code{TRUE}, graphics are shown. If \code{FALSE}, no graphics are shown. Default: \code{graphic = FALSE}
+\item{correlogram}{
+If \code{TRUE}, the correlogram for each species is shown. If \code{FALSE}, no correlogram is shown. Default: \code{correlogram = FALSE}
+}
+\item{row_col}{
+  Number of rows and columns of the figures (correlogram for each species). Default: \code{row_col = c(2, 2)}
 }
 }
 %\details{
@@ -38,8 +41,11 @@ choices (i.e. product, mean, geometric mean).
 %% ~put references to the literature/web site here ~
 %}
 \author{
-Manuela Schreyer \email{manuelalarissa.schreyer@sbg.ac.at} and
-Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at}
+Manuela Schreyer \email{manuelalarissa.schreyer@sbg.ac.at},\cr 
+Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at},\cr 
+Robert R. Junker \email{Robert.Junker@sbg.ac.at},\cr 
+Jonas Kuppler \email{Jonas.Kuppler@uni-duesseldorf.de},\cr 
+Arne Bathke \email{Arne.Bathke@sbg.ac.at}
 }
 %\note{
 %%  ~~further notes~~
@@ -54,7 +60,8 @@ Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at}
 # example function dynRB_VPa
 # for reliable results use steps = 201
 data(finch2)
-r<-dynRB_VPa(finch2, steps = 101)
+r<-dynRB_VPa(finch2, steps = 101, correlogram = TRUE, row_col = c(1,1))
+r$result
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

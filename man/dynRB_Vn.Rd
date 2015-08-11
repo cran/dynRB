@@ -8,7 +8,7 @@ Relative Dynamic Range Box size per dimension and object
 Function returns Dynamic Range Box size of each dimension \eqn{n}. Number of dynamic range boxes (\code{steps}) can be adjusted. Default: \code{steps = 201}
 }
 \usage{
-dynRB_Vn(A = A, steps = 201)
+dynRB_Vn(A = A, steps = 201, correlogram = FALSE, row_col = c(2, 2))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +17,12 @@ Data frame, where the first column is a character vector and the other columns a
 }
   \item{steps}{
 Number of range boxes. Default: \code{steps = 201}
+}
+\item{correlogram}{
+If \code{TRUE}, the correlogram for each species is shown. If \code{FALSE}, no correlogram is shown. Default: \code{correlogram = FALSE}
+}
+\item{row_col}{
+  Number of rows and columns of the figures (correlogram for each species). Default: \code{row_col = c(2, 2)}
 }
 }
 %\details{
@@ -34,8 +40,11 @@ Data frame containing the summarized niche length for each object and dimension.
 %% ~put references to the literature/web site here ~
 %}
 \author{
-Manuela Schreyer \email{manuelalarissa.schreyer@sbg.ac.at} and
-Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at}
+Manuela Schreyer \email{manuelalarissa.schreyer@sbg.ac.at},\cr 
+Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at},\cr 
+Robert R. Junker \email{Robert.Junker@sbg.ac.at},\cr 
+Jonas Kuppler \email{Jonas.Kuppler@uni-duesseldorf.de},\cr 
+Arne Bathke \email{Arne.Bathke@sbg.ac.at}
 }
 %\note{
 %%  ~~further notes~~

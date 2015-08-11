@@ -1,1 +1,4 @@
 exportPattern("^[[:alpha:]]+")
+import(caTools, corrplot)
+importFrom("graphics", "par", "plot", "title")
+importFrom("stats", "cor")
