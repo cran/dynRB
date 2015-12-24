@@ -5,9 +5,7 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   dims<-ncol(A)-1
   insects<-levels(factor(A$Species))
   if(correlogram==TRUE){
-    par(mfrow=row_col,
-        oma = c(0, 0, 2, 0),
-        mar = c(5, 5, 5, 5))
+    par(mfrow=row_col)
     G<-expand.grid(insects)
     h<-1
     k<-1
@@ -25,9 +23,6 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
       k<-k+1
     }
     title("Correlogram for each species", outer = T)
-    par(mfrow = c(1,1),
-        oma = c(0, 0, 0, 0),
-        mar = c(5, 4, 4, 2) + 0.1)
   }
   G<-expand.grid(insects,insects)
   names(G)[1:2]<-c("V1","V2")
@@ -40,17 +35,17 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   names_data_V1<-c()
   names_data_V2<-c()
   for(i in 1:nrow(G)){
-      S1<-subset(A,A$Species==G$V1[i])[,2:(dims+1)]
-      S2<-subset(A,A$Species==G$V2[i])[,2:(dims+1)]
-      SH<-A[,2:(dims+1)]
-      names_data_V1<-c(names_data_V1,as.character(G$V1[i]))
-      names_data_V2<-c(names_data_V2,as.character(G$V2[i]))
-      
-      EE<-funclist3$portionAinB_coordinates_full(S1,S2,steps=steps0)
-      G[i,3:(dims+2)]<-EE$integral_coord
-      plot_data_overlap[[i]]<-rbind(EE$integral_coord, EE$plot_data_overlap)
-      plot_alpha_grid[[i]]<-EE$alpha_grid
-      print(i)
+    S1<-subset(A,A$Species==G$V1[i])[,2:(dims+1)]
+    S2<-subset(A,A$Species==G$V2[i])[,2:(dims+1)]
+    SH<-A[,2:(dims+1)]
+    names_data_V1<-c(names_data_V1,as.character(G$V1[i]))
+    names_data_V2<-c(names_data_V2,as.character(G$V2[i]))
+    
+    EE<-.portionAinB_coordinates_full(S1,S2,steps=steps0)
+    G[i,3:(dims+2)]<-EE$integral_coord
+    plot_data_overlap[[i]]<-rbind(EE$integral_coord, EE$plot_data_overlap)
+    plot_alpha_grid[[i]]<-EE$alpha_grid
+    print(i)
   }
   print(G)
   r<-list(names_data_V1=names_data_V1, names_data_V2=names_data_V2, plot_data_overlap=plot_data_overlap, plot_alpha_grid=plot_alpha_grid, result=G)

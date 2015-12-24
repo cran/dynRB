@@ -22,7 +22,7 @@ function(r,row_col=c(3,3)){
     title("Niche size of species S1", outer = T)
     
     readline(prompt = "Press <Enter> to continue...")
-  
+    
     par(mfrow = row_col,
         oma = c(0, 0, 2, 0),
         mar = c(5, 5, 5, 5))
@@ -58,7 +58,7 @@ function(r,row_col=c(3,3)){
           h<-h+1
           readline(prompt = "Press <Enter> to continue...")}
         k<-k+1
-        }
+      }
     }
     title("overlap S1 in S2 (product) per dimension", outer = T)
   }
@@ -85,9 +85,5 @@ function(r,row_col=c(3,3)){
     }
     title("Niche size of species S1 per dimension", outer = T)
   }
-  
-  par(mfrow = c(1,1),
-      oma = c(0, 0, 0, 0),
-      mar = c(5, 4, 4, 2) + 0.1)
   
 }

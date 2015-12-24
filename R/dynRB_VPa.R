@@ -5,9 +5,7 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   dims<-ncol(A)-1
   insects<-levels(factor(A$Species))
   if(correlogram==TRUE){
-    par(mfrow=row_col,
-        oma = c(0, 0, 2, 0),
-        mar = c(5, 5, 5, 5))
+    par(mfrow=row_col)
     G<-expand.grid(insects)
     h<-1
     k<-1
@@ -25,9 +23,6 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
       k<-k+1
     }
     title("Correlogram for each species", outer = T)
-    par(mfrow = c(1,1),
-        oma = c(0, 0, 0, 0),
-        mar = c(5, 4, 4, 2) + 0.1)
   }
   G<-expand.grid(insects,insects)
   names(G)[1:2]<-c("V1","V2")
@@ -51,7 +46,7 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
     S2<-subset(A,A$Species==G$V2[i])[,2:(dims+1)]
     SH<-A[,2:(dims+1)]
     
-    V <- funclist3$volumeA2_full(S1,SH,steps=steps0,alpha_grid=seq(0,1,length=steps0) )     
+    V <- .volumeA2_full(S1,SH,steps=steps0,alpha_grid=seq(0,1,length=steps0) )     
     G$vol_V1_prod[i]<-V$integral_approx[1]
     G$vol_V1_mean[i]<-V$integral_approx[2]
     G$vol_V1_gmean[i]<-V$integral_approx[3]
@@ -59,14 +54,14 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
     plot_data_niche_size_V1[[i]]<-c(V$integral_approx[1],V$plot_data_prod)
     plot_alpha_grid[[i]]<-V$alpha_grid
     
-    V <- funclist3$volumeA2_full(S2,SH,steps=steps0,alpha_grid=seq(0,1,length=steps0) )      
+    V <- .volumeA2_full(S2,SH,steps=steps0,alpha_grid=seq(0,1,length=steps0) )      
     G$vol_V2_prod[i]<-V$integral_approx[1]
     G$vol_V2_mean[i]<-V$integral_approx[2]
     G$vol_V2_gmean[i]<-V$integral_approx[3]
     names_data_niche_size_V2<-c(names_data_niche_size_V2,as.character(G$V2[i]))
     plot_data_niche_size_V2[[i]]<-c(V$integral_approx[1],V$plot_data_prod)
     
-    EE<-funclist3$portionAinB2_full(S1,S2,steps=steps0,alpha_grid=(seq(0,1,length=steps0)[1:(steps0-1)]) )
+    EE<-.portionAinB2_full(S1,S2,steps=steps0,alpha_grid=(seq(0,1,length=steps0)[1:(steps0-1)]) )
     G$port_prod[i]<-EE$integral_approx[1]
     G$port_mean[i]<-EE$integral_approx[2]
     G$port_gmean[i]<-EE$integral_approx[3]

@@ -5,9 +5,7 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   dims<-ncol(A)-1
   insects<-levels(factor(A$Species))
   if(correlogram==TRUE){
-    par(mfrow=row_col,
-        oma = c(0, 0, 2, 0),
-        mar = c(5, 5, 5, 5))
+    par(mfrow=row_col)
     G<-expand.grid(insects)
     h<-1
     k<-1
@@ -25,9 +23,6 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
       k<-k+1
     }
     title("Correlogram for each species", outer = T)
-    par(mfrow = c(1,1),
-        oma = c(0, 0, 0, 0),
-        mar = c(5, 4, 4, 2) + 0.1)
   }
   S2<-A[2:(dims+1)]
   insects<-as.character(levels(factor(A$Species)))
@@ -41,7 +36,7 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   for(i in 1:nrow(G)){
     S1<-subset(A,A$Species==G$V1[i])[,2:(dims+1)]
     
-    EE<-funclist3$volumeA_coordinates_full(S1,S2,steps=steps0 )
+    EE<-.volumeA_coordinates_full(S1,S2,steps=steps0 )
     G[i,2:(dims+1)]<-EE$integral_coord
     plot_data_volume[[i]]<-EE$plot_volume  
     names_data_S1<-c(names_data_S1,names(EE$integral_coord))

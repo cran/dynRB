@@ -12,8 +12,8 @@ The package DynRB improves the concept of multivariate range boxes, which is hig
 \tabular{ll}{
 Package: \tab dynRB\cr
 Type: \tab Package\cr
-Version: \tab 0.4\cr
-Date: \tab 2015-08-10\cr
+Version: \tab 0.5\cr
+Date: \tab 2015-12-23\cr
 }
 }
 \author{
