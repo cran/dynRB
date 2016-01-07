@@ -37,23 +37,6 @@ r<-dynRB_VPa(A, correlogram = FALSE)
 expect_equal(c(1,1,1,1),r$result[,3])
   
 
-#############################
-
-
-t1a <- runif(1000,min=0,max=1)
-t2a <- runif(1000,min=0.4,max=1)
-t3a <- t1a[t2a<0.7]
-t4a <- t2a[t2a<0.7]-0.02
-t1a <- t1a[t2a>=0.7]
-t2a <- t2a[t2a>=0.7]
-S1 <- data.frame(Species="A", t1a=c(t1a,t3a), t2a=c(t2a,t4a))
-S2 <- data.frame(Species="B", t1a=t3a, t2a=t4a)
-A <- rbind(S1, S2)
-
-r<-dynRB_VPa(A, correlogram = FALSE)
-x <- as.numeric(r$result[,6] > c(0.95,0.45,0.95,0.45) & r$result[,6] <= c(1,0.51,1,0.51))
-
-expect_equal(c(1,1,1,1),x)
 
 
 ############################
