@@ -1,8 +1,20 @@
 dynRB_VPa <-
-function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
+function(A=A, steps=201, correlogram=FALSE, row_col=c(2, 2), pca.corr=FALSE, var.thres=0.9){
+  
   names(A)[1]<-"Species"
   steps0<-steps
   dims<-ncol(A)-1
+  
+  if(dims==1){
+    stop("The data frame has to consist of one column containing a character vector and two or more columns containing numeric vectors.")
+  }
+  
+  if(pca.corr){
+    A<-.trpca(A, var.thres)
+  }
+  
+  dims<-ncol(A)-1
+  
   insects<-levels(factor(A$Species))
   if(correlogram==TRUE){
     par(mfrow=row_col)
@@ -73,4 +85,5 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   print(G[,c(1,2,3,6,9)])
   r<-list(plot_data_niche_size_V1=plot_data_niche_size_V1, plot_data_niche_size_V2=plot_data_niche_size_V2, plot_data_overlap=plot_data_overlap, plot_alpha_grid=plot_alpha_grid, result=G)
   invisible(r)  
+
 }

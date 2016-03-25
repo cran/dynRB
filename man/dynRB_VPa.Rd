@@ -8,7 +8,8 @@ Size and pairwise overlap
 Function returns size and pairwise overlaps of niches or trait-spaces. Size or overlaps of dimensions can be aggregated by using either "product", "mean" or "geometric mean" as aggregation method. The results obtained by using the product are automatically printed. Number of dynamic range boxes (\code{steps}) can be adjusted. Default: \code{steps = 201}
 }
 \usage{
-dynRB_VPa(A = A, steps = 201, correlogram = FALSE, row_col = c(2, 2))
+dynRB_VPa(A = A, steps = 201, correlogram = FALSE, row_col = c(2, 2), 
+          pca.corr = FALSE, var.thres = 0.9)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +24,12 @@ If \code{TRUE}, the correlogram for each species is shown. If \code{FALSE}, no c
 }
 \item{row_col}{
   Number of rows and columns of the figures (correlogram for each species). Default: \code{row_col = c(2, 2)}
+}
+\item{pca.corr}{
+  If \code{TRUE}, a principal components analysis is performed. 
+}
+\item{var.thres}{
+  Variance predicted by the PCA-axes, if \code{pca.corr = TRUE}. 
 }
 }
 %\details{

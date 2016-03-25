@@ -164,3 +164,14 @@ function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
   erg<-list(alpha_grid=seq(0,1,length=steps),volume=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod) 
   return(erg)
 }
+.trpca <- function(data, va){  # data = dataset as for dynRB, va = how much variance (0-1) should included axes explain
+  PCA <- prcomp(data[,-1])
+    vars <- apply(PCA$x, 2, var)
+    prop <- cumsum(vars / sum(vars))
+    k <- which(prop >= va)[1]
+    k <- ifelse(k==1, 2, k)
+    data1 <- data.frame(data[,1], PCA$x[,1:k])
+    colnames(data1)[1] <- "Species"
+  return(data1)
+}
+

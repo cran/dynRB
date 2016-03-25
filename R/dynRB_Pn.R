@@ -3,6 +3,11 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   steps0<-steps
   names(A)[1]<-"Species"
   dims<-ncol(A)-1
+  
+  if(dims==1){
+    stop("The data frame has to consist of one column containing a character vector and two or more columns containing numeric vectors.")
+  }
+    
   insects<-levels(factor(A$Species))
   if(correlogram==TRUE){
     par(mfrow=row_col)
@@ -50,4 +55,5 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   print(G)
   r<-list(names_data_V1=names_data_V1, names_data_V2=names_data_V2, plot_data_overlap=plot_data_overlap, plot_alpha_grid=plot_alpha_grid, result=G)
   invisible(r)
+  
 }

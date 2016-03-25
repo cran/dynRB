@@ -3,6 +3,11 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   steps0<-steps
   names(A)[1]<-"Species"
   dims<-ncol(A)-1
+  
+  if(dims==1){
+    stop("The data frame has to consist of one column containing a character vector and two or more columns containing numeric vectors.")
+  }
+    
   insects<-levels(factor(A$Species))
   if(correlogram==TRUE){
     par(mfrow=row_col)
@@ -45,5 +50,6 @@ function(A=A,steps=201,correlogram=FALSE, row_col = c(2, 2)){
   plot_alpha_grid<-EE$alpha_grid
   print(G)
   r<-list(plot_data_volume=plot_data_volume, names_data_S1=names_data_S1, plot_alpha_grid=plot_alpha_grid, result=G)
-  invisible(r)
+  invisible(r) 
+  
 }
