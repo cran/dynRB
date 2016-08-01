@@ -1,4 +1,4 @@
-fe9a2268cc0f67f663db51aec9f9c971 *DESCRIPTION
+6008c467c0dff0e2cd35ed90dc3f2fcd *DESCRIPTION
 64f8ae71cf8101e9fa10c9952b2409c4 *NAMESPACE
 a43b0901b935e72f406ba6cf65ac1274 *R/dynRB-internal.R
 4fb867de2d157012fac7a1d022c55de3 *R/dynRB_Pn.R
@@ -10,10 +10,10 @@ db658dedbf1238fe4e83f9b9ca531e1c *R/dynRB_Vn.R
 8b19ea8ec1ccdbb85e6c2d250d0a247c *inst/unitTests/test_dynRB_Pn.R
 8ae2e0c3df2bdb06ad8bd909fa52dded *inst/unitTests/test_dynRB_VPa.R
 413b224537d554b14879f20630befa15 *inst/unitTests/test_dynRB_Vn.R
-271af13228e137f22f70c48ae90d1492 *man/dynRB-package.Rd
-975025bb784c6866a537671ba533d2cf *man/dynRB_Pn.Rd
-0076309da50e5f7b709cca560d0b2042 *man/dynRB_VPa.Rd
-ac776ee4d3b0bfa6f3f253d61c4895fa *man/dynRB_Vn.Rd
+0020ba4519ca2468d6bd71dbb4563e4c *man/dynRB-package.Rd
+f4272f9a3e6f74ef2687ce7e37d4e8ca *man/dynRB_Pn.Rd
+e629f31547e4016da9119fe75c413437 *man/dynRB_VPa.Rd
+f69b03b9cd9eec3d7b573f89917fb5b9 *man/dynRB_Vn.Rd
 8607f2135fdd302e7b22ef33daf97ad5 *man/finch.Rd
 e81d170ae477786fad64b68bc7a5e1f4 *man/finch2.Rd
 79ac478277d1bb5726c68fcd6b14b132 *man/overview.Rd

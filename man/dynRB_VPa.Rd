@@ -44,9 +44,9 @@ choices (i.e. product, mean, geometric mean).
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
-%\references{
-%% ~put references to the literature/web site here ~
-%}
+\references{
+Junker RR, Kuppler J, Bathke AC, Schreyer ML, Trutschnig W (2016) Dynamic range boxes - A robust non-parametric approach to quantify size and overlap of n-dimensional hypervolumes. Methods in Ecology and Evolution doi: 10.1111/2041-210X.12611
+}
 \author{
 Manuela Schreyer \email{manuelalarissa.schreyer@sbg.ac.at},\cr 
 Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at},\cr 
