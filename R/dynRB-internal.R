@@ -25,19 +25,30 @@ function(alpha,SSN1,SSN2,nrow_S1,nrow_S2,Ncol, .quantile_intersection){
   return(r)                                                                                        
 }
 .portionAinB_coordinates_full <-
+  function(S1,S2,steps=101 ){ 
+    nt<-ncol(S1)
+    integral_coord<-rep(0,length=nt)
+    portionAinB_function<-function(x1,x2,steps){
+      r<-.portionAinB_full_onecolumn(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
+      return(r$integral_approx)
+    }
+    portionAinB_function2<-function(x1,x2,steps){
+      r<-.portionAinB_full_onecolumn(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
+      return(r$overlap)
+    }
+    integral_coord<-mapply(portionAinB_function, x1=S1, x2=S2, MoreArgs =list(steps=steps))
+    plot_data_overlap<-mapply(portionAinB_function2, x1=S1, x2=S2, MoreArgs =list(steps=steps))
+    alpha_grid<-seq(0,1,length=steps)[1:(steps-1)]
+    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord,plot_data_overlap=plot_data_overlap)
+    return(erg)
+  }
+.portionAinB_coordinates_full_dim1 <-
 function(S1,S2,steps=101 ){ 
-  nt<-ncol(S1)
+  nt<-1
   integral_coord<-rep(0,length=nt)
-  portionAinB_function<-function(x1,x2,steps){
-    r<-.portionAinB_full_onecolumn(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
-    return(r$integral_approx)
-  }
-  portionAinB_function2<-function(x1,x2,steps){
-    r<-.portionAinB_full_onecolumn(data.frame(v1=x1) ,data.frame(v1=x2),steps=steps  )
-    return(r$overlap)
-  }
-  integral_coord<-mapply(portionAinB_function, x1=S1, x2=S2, MoreArgs =list(steps=steps))
-  plot_data_overlap<-mapply(portionAinB_function2, x1=S1, x2=S2, MoreArgs =list(steps=steps))
+  r<-.portionAinB_full_onecolumn(data.frame(v1=S1) ,data.frame(v1=S2),steps=steps  )
+  integral_coord<-r$integral_approx
+  plot_data_overlap<-r$overlap
   alpha_grid<-seq(0,1,length=steps)[1:(steps-1)]
   erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord,plot_data_overlap=plot_data_overlap)
   return(erg)
@@ -64,6 +75,29 @@ function(S1,S2,steps=101,alpha_grid){
   alpha_grid0<-alpha_grid
   .portionAinB2_full_severalcol(S1,S2,steps=steps0,alpha_grid=alpha_grid0)
 }
+.portionAinB2_full_dim1 <-
+  function(S1,S2,steps=101,alpha_grid){
+    steps0<-steps
+    alpha_grid0<-alpha_grid
+    .portionAinB2_full_severalcol_dim1(S1,S2,steps=steps0,alpha_grid=alpha_grid0)
+}
+.portionAinB2_full_severalcol_dim1 <- 
+  function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)[1:(steps-1)]){
+    S<-c(S1,S2)
+    alpha_grid<-seq(0,1,length=steps) 
+    Ncol<-1
+    ab<-max(S)-min(S)         
+    SSN<-t((t(S)-min(S))/(ab))    
+    SSN[,ab==0]<-0.5                 
+    SSN<-as.data.frame(SSN)          
+    nrow_S1<-length(S1)
+    nrow_S2<-length(S2)
+    z<-mapply(.intersection_onecolumn, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow_S1,], SSN2=SSN[(nrow_S1+1):(nrow_S1+nrow_S2),],nrow_S1=nrow_S1,nrow_S2=nrow_S2,Ncol=Ncol,.quantile_intersection=.quantile_intersection)) 
+    integral_approx<-c(prod=trapz(seq(0,1,length=steps), z),mean=trapz(seq(0,1,length=steps),z),gmean=trapz(seq(0,1,length=steps),z)) 
+    plot_data_prod<-z
+    erg<-list(alpha_grid=seq(0,1,length=steps)[1:(steps-1)],overlap=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod)                                                                                             
+    return(erg)
+  }
 .portionAinB2_full_severalcol <-
 function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)[1:(steps-1)]){
   S<-rbind(S1,S2)
@@ -108,6 +142,17 @@ function(alpha,SSN1){
   vol<-c(prod=product,mean=mean(SP1[2,]-SP1[1,]),gmean=product^{1/length(SP1[2,]-SP1[1,])})   
   return(vol)                                                                                        
 }
+.volumeA_coordinates_full_dim1 <-
+  function(S1,S2,steps=101 ){ 
+    nt<-1
+    names(S2)<-"v1"
+    r<-.volumeA_full_onecol(data.frame(v1=S1), data.frame(v1=S2), steps=steps)
+    integral_coord<-r$integral_approx
+    plot_volume<-r$volume
+    alpha_grid<-seq(0,1,length=steps)    
+    erg<-list(alpha_grid=alpha_grid,integral_coord=integral_coord,plot_volume=plot_volume)
+    return(erg)
+}
 .volumeA_coordinates_full <-
 function(S1,S2,steps=101 ){ 
   nt<-ncol(S1)
@@ -142,28 +187,50 @@ function(S1,S2,steps=101){
   return(erg)
 }
 .volumeA2_full <-
-function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
-  steps0<-steps
-  alpha0_grid<-alpha_grid
-  .volumeA2_full_severalcol(S1,S2,steps=steps0,alpha_grid=alpha0_grid  )
-}
+  function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
+    steps0<-steps
+    alpha0_grid<-alpha_grid
+    .volumeA2_full_severalcol(S1,S2,steps=steps0,alpha_grid=alpha0_grid  )
+  }
+.volumeA2_full_dim1 <-
+  function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
+    steps0<-steps
+    alpha0_grid<-alpha_grid
+    .volumeA2_full_severalcol_dim1(S1,S2,steps=steps0,alpha_grid=alpha0_grid  )
+  }
+.volumeA2_full_severalcol_dim1 <-
+  function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
+    S<-c(S1,S2)
+    Ncol<-1
+    ab<-max(S)-min(S)          
+    SSN<-t((t(S)-min(S))/(ab))    
+    SSN[,ab==0]<-0.5                 
+    SSN<-as.data.frame(SSN) 
+    z<-mapply(.volume_onecol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN))
+    z<-rbind(1/(1-alpha_grid[-length(alpha_grid)])*z[-length(alpha_grid)])
+    z <- ifelse(z <= 1, z, 1)
+    integral_approx<-c(prod=trapz(alpha_grid[-length(alpha_grid)], z),mean=trapz(alpha_grid[-length(alpha_grid)],z),gmean=trapz(alpha_grid[-length(alpha_grid)],z))
+    plot_data_prod<-z
+    erg<-list(alpha_grid=seq(0,1,length=steps),volume=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod) 
+    return(erg)
+  }
 .volumeA2_full_severalcol <-
-function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
-  S<-rbind(S1,S2)
-  Ncol<-ncol(S1)
-  Spans<-data.frame(trait_nr=1:Ncol,min=matrix(mapply(min, S, MoreArgs = list(na.rm = TRUE))),max=matrix(mapply(max, S, MoreArgs = list(na.rm = TRUE))))    
-  ab<-Spans$max-Spans$min          
-  SSN<-t((t(S)-Spans$min)/(ab))    
-  SSN[,ab==0]<-0.5                 
-  SSN<-as.data.frame(SSN)          
-  z<-mapply(.volume_severalcol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow(S1),]))
-  z<-rbind(1/(1-alpha_grid[-length(alpha_grid)])*z[1,][-length(alpha_grid)],1/(1-alpha_grid[-length(alpha_grid)])*z[2,][-length(alpha_grid)],1/(1-alpha_grid[-length(alpha_grid)])*z[3,][-length(alpha_grid)])
-  z <- ifelse(z <= 1, z, 1)
-  integral_approx<-c(prod=trapz(alpha_grid[-length(alpha_grid)], z[1,]),mean=trapz(alpha_grid[-length(alpha_grid)],z[2,]),gmean=trapz(alpha_grid[-length(alpha_grid)],z[3,]))
-  plot_data_prod<-z[1,]
-  erg<-list(alpha_grid=seq(0,1,length=steps),volume=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod) 
-  return(erg)
-}
+  function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)){
+    S<-rbind(S1,S2)
+    Ncol<-ncol(S1)
+    Spans<-data.frame(trait_nr=1:Ncol,min=matrix(mapply(min, S, MoreArgs = list(na.rm = TRUE))),max=matrix(mapply(max, S, MoreArgs = list(na.rm = TRUE))))    
+    ab<-Spans$max-Spans$min          
+    SSN<-t((t(S)-Spans$min)/(ab))    
+    SSN[,ab==0]<-0.5                 
+    SSN<-as.data.frame(SSN)          
+    z<-mapply(.volume_severalcol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow(S1),]))
+    z<-rbind(1/(1-alpha_grid[-length(alpha_grid)])*z[1,][-length(alpha_grid)],1/(1-alpha_grid[-length(alpha_grid)])*z[2,][-length(alpha_grid)],1/(1-alpha_grid[-length(alpha_grid)])*z[3,][-length(alpha_grid)])
+    z <- ifelse(z <= 1, z, 1)
+    integral_approx<-c(prod=trapz(alpha_grid[-length(alpha_grid)], z[1,]),mean=trapz(alpha_grid[-length(alpha_grid)],z[2,]),gmean=trapz(alpha_grid[-length(alpha_grid)],z[3,]))
+    plot_data_prod<-z[1,]
+    erg<-list(alpha_grid=seq(0,1,length=steps),volume=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod) 
+    return(erg)
+  }
 .trpca <- function(data, va){  # data = dataset as for dynRB, va = how much variance (0-1) should included axes explain
   PCA <- prcomp(data[,-1])
     vars <- apply(PCA$x, 2, var)
