@@ -37,7 +37,7 @@ Junker RR, Kuppler J, Bathke AC, Schreyer ML, Trutschnig W (2016) Dynamic range 
 \author{
 Manuela Schreyer \email{manuelalarissa.schreyer@sbg.ac.at},\cr 
 Wolfgang Trutschnig \email{Wolfgang.Trutschnig@sbg.ac.at},\cr 
-Robert R. Junker \email{Robert.Junker@sbg.ac.at},\cr 
+Robert R. Junker \email{Robert.Junker@sbg.ac.at} (corresponding author),\cr 
 Jonas Kuppler \email{Jonas.Kuppler@uni-duesseldorf.de},\cr 
 Arne Bathke \email{Arne.Bathke@sbg.ac.at}
 }
