@@ -12,8 +12,8 @@ The package DynRB improves the concept of multivariate range boxes, which is hig
 \tabular{ll}{
 Package: \tab dynRB\cr
 Type: \tab Package\cr
-Version: \tab 0.10\cr
-Date: \tab 2017-11-03\cr
+Version: \tab 0.11\cr
+Date: \tab 2018-06-11\cr
 }
 }
 \author{
@@ -25,6 +25,9 @@ Arne Bathke \email{Arne.Bathke@sbg.ac.at}
 }
 \references{
 Junker RR, Kuppler J, Bathke AC, Schreyer ML, Trutschnig W (2016) Dynamic range boxes - A robust non-parametric approach to quantify size and overlap of n-dimensional hypervolumes. Methods in Ecology and Evolution doi: 10.1111/2041-210X.12611
+}
+\note{
+A tutorial that introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows how to visualize the results can be found here: \href{https://tinyurl.com/y7xgdeq7}{Tutorial dynRB}
 }
 \keyword{ package }
 \examples{

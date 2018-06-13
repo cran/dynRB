@@ -29,6 +29,9 @@ To demonstrate the application of the functions for real world data, we used exi
 \source{
 Snodgrass R and Heller E (1904) Papers from the Hopkins-Stanford Galapagos Expedition, 1898-99. XVI. Birds. Proceedings of the Washington Academy of Sciences 5: 231-372.
 }
+\note{
+A tutorial that introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows how to visualize the results can be found here: \href{https://tinyurl.com/y7xgdeq7}{Tutorial dynRB}
+}
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}

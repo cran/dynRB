@@ -54,9 +54,9 @@ Robert R. Junker \email{Robert.Junker@sbg.ac.at} (corresponding author),\cr
 Jonas Kuppler \email{Jonas.Kuppler@uni-duesseldorf.de},\cr 
 Arne Bathke \email{Arne.Bathke@sbg.ac.at}
 }
-%\note{
-%%  ~~further notes~~
-%}
+\note{
+A tutorial that introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows how to visualize the results can be found here: \href{https://tinyurl.com/y7xgdeq7}{Tutorial dynRB}
+}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

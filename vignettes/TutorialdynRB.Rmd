@@ -1,0 +1,192 @@
+---
+title: 'Quantification of size and overlap of *n*-dimensional hypervolumes in R: *dynRB* tutorial'
+author: |
+  | Robert R. Junker^1,^*, Jonas Kuppler^1,2^, Arne C.Bathke^3^, Manuela L. Schreyer^3^, Wolfgang Trutschnig^3^
+  
+  | ^1^Department of Bioscience, University of Salzburg, Salzburg, Austria; ^2^Institute of Evolutionary Ecology and Conservation Genomics, University of Ulm, Ulm, Germany; ^3^Department for Mathematics, University of Salzburg, Salzburg, Austria
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quantification of size and overlap of *n*-dimensional hypervolumes in R: *dynRB* tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Abstract
+
+This tutorial demonstrates the use of the R package dynamic range boxes *dynRB* to quantify the size and overlap of *n*-dimensional hypervolumes. It provides information on formatting data for the use in *dynRB*, introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows  how to visualize the results. 
+
+## Required packages
+
+The quantification of size and overlap of *n*-dimensional hypervolumes requires the package *dynRB* (a detailed description of the method can be found in Junker *et al.* 2016). Additionally, the packages *ggplot2*, *reshape2*, *vegan*, and *RColorBrewer* are required for follow-up analyses demonstrated in this tutorial. 
+
+```{r library, message=FALSE}
+library(dynRB)
+library(ggplot2)
+library(reshape2)
+library(vegan)
+library(RColorBrewer)
+```
+
+## Formatting data for use in *dynRB*
+
+The grouping variable (e.g. species) is required to be in the first column of the data table, followed by two or more columns containing continuous variables representing the different dimensions of the *n*-dimensional hypervolume. Thus, each row contains the measurements of one unit of interest (e.g. an individual of a species) in column 2 and the following columns as well as the grouping variable for this unit (first column). *dynRB* does not require complete measurements of all continuous variables in each row; missing values (i.e. NA) are omitted during the analysis. The package *dynRB* provides an example data set "finch"", which serves as a reference. The "finch" data set includes morphological measurements of Darwin finches *Geospiza* sp., which originates from Snodgrass and Heller (1904) and was extracted from the R package *hypervolume* (Blonder *et al.* 2014). It comprises quantitative measurements of nine traits characterizing five (sub-) species of finches, each trait was measured at least in 10 individuals per species (see also Junker *et al.* 2016).
+
+```{r data}
+data(finch)
+head(finch)[,1:5]
+```
+
+The finch data set contains measurements of nine traits of 146 bird individuals belonging to five species. For a weighted analysis putting more weight on some individuals than on others, these individuals need to appear in two or more rows of the data table (compare to Kuppler *et al.* 2017; Junker & Larue-Kontic 2018). For instance, in Junker & Larue-Kontic (2018) we quantified the size and overlap of the trait spaces occupied by plant communities with plant traits as dimensions. In order to consider the abundances of the plant species within each of the communities, trait-data of each species was inserted in a number of rows proportional to the abundance of the species in the community. Let us assume species A has an abundance of 10 individuals and species B 20 individuals in the same community; in this case trait-data of species A would appear in 10 rows and those of species B in 20 rows. 
+
+## Quantification of size and overlap of *n*-dimensional hypervolumes
+
+The main function of the package *dynRB* "dynRB_VPa" quantifies the size and the overlap of the *n*-dimensional hypervolumes of two or more objects (e.g. the five finch species in the example data). 
+
+```{r finch, results = "hide"}
+r <- dynRB_VPa(finch)
+```
+Dynamic range boxes first calculates the size (*vol*) and overlap (*port*) individually for each dimension and then aggregates the dimensions in order to quantify the size and overlap of the *n*-dimensional hypervolumes. Both size and overlap are bounded between 0 and 1, with values near 0 indicating a small size and overlap and near 1 a large size and overlap. Three different aggregation methods are provided:  
+
+* Product: size and overlap of each of the dimensions are multiplied. Hypervolumes become zero if size or overlap is zero in one of the dimensions. The size and overlap are dependent on the number of dimensions and thus, size and overlap of hypervolumes based on different number of dimensions are not comparable.  
+
+* Mean: the mean size and overlap of the dimensions. Hypervolumes do not become zero if size or overlap is zero in one of the dimensions. The size and overlap are not biased by the number of dimensions and thus comparable between hypervolumes with different numbers of dimensions.   
+
+* Gmean: the geometric mean size and overlap of the dimensions. Hypervolumes become zero if size or overlap is zero in one of the dimensions. The size and overlap are not biased by the number of dimensions and thus comparable between hypervolumes with different numbers of dimensions.  
+
+```{r result}
+res <- r$result
+res[1:6, 1:5]
+```
+Columns V1 and V2 denote the species pair considered. Columns "port_prod", "port_mean", and "port_gmean" contain the overlap of the hypervolumes of the species given in the first two columns (considering the afore-mentioned aggregation methods). Thus, each of the three columns show the overlap between V1 and V2 expressed as the proportion of the hypervolume of V2 that is covered by the hypervolume of V1 (*port(V1, V2)*). Since the overlap is expressed as proportion it is dependent on the size of the hypervolumes and thus, *port(V1, V2)* is not the same as *port(V2, V1)* since overlaps are, by construction, asymmetric.
+
+```{r result2}
+res[1:6, c(1:2, 6:11)]
+```
+
+Colums "vol_V1_prod", "vol_V1_mean", and "vol_V1_gmean" give the size *vol(V1)* of the hypervolume of species V1 expressed by the different aggregation methods. Colums "vol_V2_prod", "vol_V2_mean", and "vol_V2_gmean" contain the size *vol(V2)*  of the hypervolume of species V2.
+
+## Quantification of overlaps per dimension
+
+The function of the package *dynRB* "dynRB_Pn" quantifies the overlap per dimension of the *n*-dimensional hypervolumes of two or more objects (e.g. the five finches in the example data). 
+
+```{r result3, results = "hide"}
+r <- dynRB_Pn(finch)
+```
+```{r result31}
+head(r$result)
+```
+
+Columns V1 and V2 denote the species pair considered. The following columns give the overlap *port(V1, V2)* for each of the dimensions contained in the data set. 
+
+## Quantification of sizes per dimension
+
+The function of the package *dynRB* "dynRB_Vn" quantifies the size per dimension of the *n*-dimensional hypervolume for each of the objects (e.g. the five finches in the example data). 
+
+```{r result4, results = "hide"}
+r <- dynRB_Vn(finch)
+```
+```{r result41}
+head(r$result)
+```
+
+Column V1 denotes the species considered. The following columns give the size *vol(V1)* for each of the dimensions contained in the data set. 
+
+## Transformation of the output (to matrix format)
+
+Many follow-up analyses may require another data format as the one provided by *dynRB*. Often matrices are required with the groups as row and column names and the pairwise overlap as entries in the cells. 
+
+```{r result5, results = "hide"}
+r <- dynRB_VPa(finch)
+# aggregation method product  
+om1 <- reshape(r$result[,1:3], direction="wide", idvar="V1", timevar="V2") 
+#aggregation method mean  
+om2 <- reshape(r$result[,c(1,2,4)], direction="wide", idvar="V1", timevar="V2") 
+#aggregation method gmean  
+om3 <- reshape(r$result[,c(1,2,5)], direction="wide", idvar="V1", timevar="V2") 
+
+```
+```{r result51}
+om1
+```
+
+Each element in this matrix is identified by its row number, which corresponds to one particular group, and its column number, which corresponds to another group. For example, om[1,3] refers to the entry in the first row and third column of the table. Its interpretation is as follows. It is the proportion of the hypervolume of the third column group (*Geospiza fortis platyrhyncha*) that is overlapped by the hypervolume of the first row group (*Geospiza fortis fortis*), i.e. *port(Geospiza fortis platyrhyncha, Geospiza fortis fortis)*.
+
+## Evaluation of the asymmetry in overlaps
+
+One example to analyze the output of dynamic range boxes is to evaluate the asymmetry of overlaps using a Mantel test. Therefore, the lower half of the matrix generated from the output of *dynRB* needs to be correlated with the upper half of the same matrix. 
+
+```{r plot1, results = "hide", fig.width=7, fig.height=5, message=FALSE, warning=FALSE}
+r <- dynRB_VPa(finch)
+#aggregation method mean  
+om <- reshape(r$result[,c(1,2,4)], direction="wide", idvar="V1", timevar="V2") 
+mantel(as.dist(om[2:ncol(om)]), as.dist(t(om[2:ncol(om)])), permutations = 1000)
+plot(as.dist(om[2:ncol(om)]), as.dist(t(om[2:ncol(om)]))) 
+```
+
+The result of the Mantel test shows that overlaps *port(V1, V2)* and *port(V2, V1)* are well correlated, i.e. overlaps are largely symmetric.
+
+## Visualization of overlaps using heatmaps
+
+Pairwise overlaps can be visualized as a heatmap (see examples in Junker *et al.* 2016; Kuppler *et al.* 2017; Junker & Larue-Kontic 2018). 
+
+```{r plot2, results = "hide", fig.width=6, fig.height=4}
+r <- dynRB_VPa(finch)  #main function of dynRB to calculate size and overlap of hypervolumes
+result <- r$result
+Overlap <- as.numeric(ifelse(result$V1 == result$V2, "NA", result$port_prod))  
+# 'result$port_prod' may be changed to 'result$port_mean' or 'result$port_gmean'
+is.numeric(Overlap)
+Result2 <- cbind(result, Overlap)
+ggplot(Result2, aes(x = V1, y = V2)) +
+  geom_tile(data = subset(Result2, !is.na(Overlap)), aes(fill = Overlap), color="black") +
+  geom_tile(data = subset(Result2,  is.na(Overlap)), fill = "lightgrey", color="black")
+```
+
+In this example the hypervolumes of only one species pair do overlap, the remaining species do not share space in the hypervolume (see also Fig. 4 in Junker *et al.* 2016).  
+The following code will result in a similar heatmap with customized settings: 
+
+```{r plot3, results = "hide", fig.width=6, fig.height=4}
+r <- dynRB_VPa(finch)  
+theme_change <- theme(
+  plot.background = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  panel.background = element_blank(),
+  panel.border = element_blank(),
+  axis.line = element_blank(),
+  axis.ticks = element_blank(),
+  axis.text.x = element_text(colour="black", size = rel(1.5), angle=35, hjust = 1),
+  axis.text.y = element_text(colour="black", size = rel(1.5)),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank()
+)
+result <- r$result
+Overlap <- as.numeric(ifelse(result$V1 == result$V2, "NA", result$port_prod))  
+# 'result$port_prod' may be changed to 'result$port_mean' or 'result$port_gmean'
+is.numeric(Overlap)
+Result2<-cbind(result, Overlap)
+breaks <- seq(min(Overlap, na.rm=TRUE),max(Overlap, na.rm=TRUE),  
+              by=round(max(Overlap, na.rm=TRUE)/10, digits=3))
+col1 <- colorRampPalette(c("white", "navyblue")) #define color gradient
+ggplot(Result2, aes(x = V1, y = V2)) +
+  geom_tile(data = subset(Result2, !is.na(Overlap)), aes(fill = Overlap), color="black") +
+  geom_tile(data = subset(Result2,  is.na(Overlap)), fill = "lightgrey", color="black") +
+  scale_fill_gradientn(colours=col1(8), breaks=breaks, guide="colorbar",  
+                       limits=c(min(Overlap, na.rm=TRUE),max(Overlap, na.rm=TRUE))) +
+  theme_change
+```
+
+## References
+Blonder, B., Lamanna, C., Violle, C. & Enquist, B.J. (2014) The *n*-dimensional hypervolume. *Global Ecology and Biogeography*, 23, 595-609. 
+
+Junker, R.R., Kuppler, J., Bathke, A., Schreyer, M.L. & Trutschnig, W. (2016) Dynamic range boxes - A robust non-parametric approach to quantify the size and overlap of niches and trait-spaces in n-dimensional hypervolumes *Methods in Ecology and Evolution*, 7, 1503-1513.  
+
+Junker, R.R. & Larue-Kontic, A. (2018) Elevation predicts the functional composition of alpine plant communities based on vegetative traits, but not based on floral traits. *Alpine Botany*.  
+
+Kuppler, J., MK, H., Trutschnig, W., Bathke, A., Eiben, J., Daehler, C. & Junker, R. (2017) Exotic flower visitors exploit large floral trait spaces resulting in asymmetric resource partitioning with native visitors. *Functional Ecology*, 31, 2244-2254.  
+
+Snodgrass, R. & Heller, E. (1904) Papers from the Hopkins-Stanford Galapagos Expedition, 1898-99. XVI. Birds. *Proceedings of the Washington Academy of Sciences*, 5, 231-372.
+
+
+
+
