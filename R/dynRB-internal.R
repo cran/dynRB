@@ -1,3 +1,8 @@
+.trapz <- 
+function(x,y){
+  n <- length(x)
+  return(sum((y[1:(n-1)]+y[2:n])/2*(x[2:n]-x[1:(n-1)])))
+}
 .intersection_onecolumn <-
 function(alpha, SSN1, SSN2, nrow_S1, nrow_S2, Ncol, .quantile_intersection){
   SP_inters <- .quantile_intersection(vec1 = SSN1, vec2 = SSN2, a = alpha/2, b = 1 - alpha/2, n = nrow_S1)
@@ -65,7 +70,7 @@ function (S1, S2, steps = 101) {
   nrow_S1 <- nrow(S1)
   nrow_S2 <- nrow(S2)
   z <- mapply(.intersection_onecolumn, alpha = alpha_grid,  MoreArgs = list(SSN1 = SSN[1:nrow_S1, ], SSN2 = SSN[(nrow_S1 + 1):(nrow_S1 + nrow_S2), ], nrow_S1 = nrow_S1, nrow_S2 = nrow_S2, Ncol = Ncol, .quantile_intersection = .quantile_intersection))
-  integral_approx <- c(prod = trapz(alpha_grid, z))
+  integral_approx <- c(prod = .trapz(alpha_grid, z))
   erg <- list(alpha_grid = alpha_grid, overlap = z, integral_approx = integral_approx)
   return(erg)
 }
@@ -93,7 +98,7 @@ function(S1,S2,steps=101,alpha_grid){
     nrow_S1<-length(S1)
     nrow_S2<-length(S2)
     z<-mapply(.intersection_onecolumn, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow_S1,], SSN2=SSN[(nrow_S1+1):(nrow_S1+nrow_S2),],nrow_S1=nrow_S1,nrow_S2=nrow_S2,Ncol=Ncol,.quantile_intersection=.quantile_intersection)) 
-    integral_approx<-c(prod=trapz(seq(0,1,length=steps), z),mean=trapz(seq(0,1,length=steps),z),gmean=trapz(seq(0,1,length=steps),z)) 
+    integral_approx<-c(prod=.trapz(seq(0,1,length=steps), z),mean=.trapz(seq(0,1,length=steps),z),gmean=.trapz(seq(0,1,length=steps),z)) 
     plot_data_prod<-z
     erg<-list(alpha_grid=seq(0,1,length=steps)[1:(steps-1)],overlap=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod)                                                                                             
     return(erg)
@@ -111,7 +116,7 @@ function(S1,S2,steps=101,alpha_grid=seq(0,1,length=steps)[1:(steps-1)]){
   nrow_S1<-nrow(S1)
   nrow_S2<-nrow(S2)
   z<-mapply(.intersection_severalcol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow_S1,], SSN2=SSN[(nrow_S1+1):(nrow_S1+nrow_S2),],nrow_S1=nrow_S1,nrow_S2=nrow_S2,Ncol=Ncol,.quantile_intersection=.quantile_intersection)) 
-  integral_approx<-c(prod=trapz(seq(0,1,length=steps), z[1,]),mean=trapz(seq(0,1,length=steps),z[2,]),gmean=trapz(seq(0,1,length=steps),z[3,])) 
+  integral_approx<-c(prod=.trapz(seq(0,1,length=steps), z[1,]),mean=.trapz(seq(0,1,length=steps),z[2,]),gmean=.trapz(seq(0,1,length=steps),z[3,])) 
   plot_data_prod<-z[1,]
   erg<-list(alpha_grid=seq(0,1,length=steps)[1:(steps-1)],overlap=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod)                                                                                             
   return(erg)
@@ -182,7 +187,7 @@ function(S1,S2,steps=101){
   z<-mapply(.volume_onecol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow(S1),])) 
   z<-1/(1-alpha_grid[-length(alpha_grid)])*z[-length(alpha_grid)]
   z <- ifelse(z <= 1, z, 1)
-  integral_approx<-c(prod=trapz(alpha_grid[-length(alpha_grid)], z))
+  integral_approx<-c(prod=.trapz(alpha_grid[-length(alpha_grid)], z))
   erg<-list(alpha_grid=alpha_grid,volume=z,integral_approx=integral_approx) 
   return(erg)
 }
@@ -209,7 +214,7 @@ function(S1,S2,steps=101){
     z<-mapply(.volume_onecol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN))
     z<-rbind(1/(1-alpha_grid[-length(alpha_grid)])*z[-length(alpha_grid)])
     z <- ifelse(z <= 1, z, 1)
-    integral_approx<-c(prod=trapz(alpha_grid[-length(alpha_grid)], z),mean=trapz(alpha_grid[-length(alpha_grid)],z),gmean=trapz(alpha_grid[-length(alpha_grid)],z))
+    integral_approx<-c(prod=.trapz(alpha_grid[-length(alpha_grid)], z),mean=.trapz(alpha_grid[-length(alpha_grid)],z),gmean=.trapz(alpha_grid[-length(alpha_grid)],z))
     plot_data_prod<-z
     erg<-list(alpha_grid=seq(0,1,length=steps),volume=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod) 
     return(erg)
@@ -226,7 +231,7 @@ function(S1,S2,steps=101){
     z<-mapply(.volume_severalcol, alpha = alpha_grid, MoreArgs = list(SSN1=SSN[1:nrow(S1),]))
     z<-rbind(1/(1-alpha_grid[-length(alpha_grid)])*z[1,][-length(alpha_grid)],1/(1-alpha_grid[-length(alpha_grid)])*z[2,][-length(alpha_grid)],1/(1-alpha_grid[-length(alpha_grid)])*z[3,][-length(alpha_grid)])
     z <- ifelse(z <= 1, z, 1)
-    integral_approx<-c(prod=trapz(alpha_grid[-length(alpha_grid)], z[1,]),mean=trapz(alpha_grid[-length(alpha_grid)],z[2,]),gmean=trapz(alpha_grid[-length(alpha_grid)],z[3,]))
+    integral_approx<-c(prod=.trapz(alpha_grid[-length(alpha_grid)], z[1,]),mean=.trapz(alpha_grid[-length(alpha_grid)],z[2,]),gmean=.trapz(alpha_grid[-length(alpha_grid)],z[3,]))
     plot_data_prod<-z[1,]
     erg<-list(alpha_grid=seq(0,1,length=steps),volume=z,integral_approx=integral_approx,plot_data_prod=plot_data_prod) 
     return(erg)

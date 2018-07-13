@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
-import(caTools, corrplot, RColorBrewer, ggplot2, reshape2, vegan)
+import(corrplot, RColorBrewer, ggplot2, reshape2, vegan)
 importFrom("graphics", "par", "plot", "title")
 importFrom("stats", "cor", "quantile")
 importFrom("stats", "prcomp", "var")

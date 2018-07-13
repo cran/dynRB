@@ -1,6 +1,6 @@
-73cfd967e2e1869f447737efc9893a75 *DESCRIPTION
-1e28317a8cf9d9719ed6532e7eccab2d *NAMESPACE
-eaf8f845ce250b5a674904fcd2819087 *R/dynRB-internal.R
+3dc93d5d06aa5cef04e662cac346aeb3 *DESCRIPTION
+ce305124c2fdd110aaaffa58c8774c5d *NAMESPACE
+64d946f0509f4f0f0f00539ec09c128e *R/dynRB-internal.R
 faab76d6435b39a80073fba7b4995cf5 *R/dynRB_Pn.R
 ce2e82d67cef3328eddb85d426fdf590 *R/dynRB_VPa.R
 6f78c6c1f4fd47461ed7febd4d6a099b *R/dynRB_Vn.R
@@ -14,7 +14,7 @@ e7077a2b7822fae6fa9e713226d61aae *build/vignette.rds
 8b19ea8ec1ccdbb85e6c2d250d0a247c *inst/unitTests/test_dynRB_Pn.R
 8ae2e0c3df2bdb06ad8bd909fa52dded *inst/unitTests/test_dynRB_VPa.R
 413b224537d554b14879f20630befa15 *inst/unitTests/test_dynRB_Vn.R
-983658138d933d0cea55e6006eb1080d *man/dynRB-package.Rd
+43467bdc7d886ce415869055bef857d2 *man/dynRB-package.Rd
 6de91bf758e4736b0624efb1eb535e38 *man/dynRB_Pn.Rd
 ab518e63173c70f83ce2c604cb0f5163 *man/dynRB_VPa.Rd
 5780d0928c70d0425b7e0582806facfe *man/dynRB_Vn.Rd
