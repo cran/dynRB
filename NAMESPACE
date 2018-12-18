@@ -1,6 +1,6 @@
 exportPattern("^[[:alpha:]]+")
-import(corrplot, RColorBrewer, ggplot2, reshape2, vegan)
+import(corrplot, RColorBrewer, ggplot2, reshape2, vegan, foreign, dplyr)
 importFrom("graphics", "par", "plot", "title")
 importFrom("stats", "cor", "quantile")
 importFrom("stats", "prcomp", "var")
-
+importFrom("stats", "qnorm")

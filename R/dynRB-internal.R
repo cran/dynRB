@@ -246,4 +246,53 @@ function(S1,S2,steps=101){
     colnames(data1)[1] <- "Species"
   return(data1)
 }
-
+.getVarianceEstimate <-function(x,y){
+  # X
+  x_smallerM = x[1:round(length(x)/2 + 0.1)] #x[x < median(x)]
+  x_greaterM = x[round(length(x)/2+1.1):length(x)]  #x[x >= median(x)]
+  n = as.numeric(length(x))
+  k = as.numeric(length(x_smallerM))
+  x_smallerM_ranks = rank(x_smallerM)
+  x_greaterM_ranks = rank(x_greaterM)
+  # Y
+  y_smallerM =  y[1:round(length(y)/2 +0.1)] # y[y < median(y)]
+  y_greaterM =  y[round(length(y)/2+1.1):length(y)]# y[y >= median(y)]
+  m = as.numeric(length(y))
+  l = as.numeric(length(y_smallerM))
+  y_smallerM_ranks = rank(y_smallerM)
+  y_greaterM_ranks = rank(y_greaterM)
+  xy_smallerM_ranks = rank(c(x_smallerM,y_smallerM))[1:k]
+  yx_smallerM_ranks = rank(c(y_smallerM,x_smallerM))[1:l]
+  xy_greaterM_ranks = rank(c(x_greaterM,y_greaterM))[1:(n-k)]
+  yx_greaterM_ranks = rank(c(y_greaterM,x_greaterM))[1:(m-l)]
+  s2_X1 = 1/(l^2*(k-1))       * sum((xy_smallerM_ranks - x_smallerM_ranks - mean(xy_smallerM_ranks) + (k+1)/2)^2)
+  s2_X2 = 1/((m-l)^2*(n-k-1)) * sum((xy_greaterM_ranks - x_greaterM_ranks - mean(xy_greaterM_ranks) + (n-k+1)/2)^2)
+  s2_Y1 = 1/(k^2*(l-1))       * sum((yx_smallerM_ranks - y_smallerM_ranks - mean(yx_smallerM_ranks) + (l+1)/2)^2)
+  s2_Y2 = 1/((n-k)^2*(m-l-1)) * sum((yx_greaterM_ranks - y_greaterM_ranks - mean(yx_greaterM_ranks) + (m-l+1)/2)^2)
+  s2_2 = (l+k)*(s2_X1/k + s2_Y1/l) + (n+m-l-k)*(s2_X2/(n-k) + s2_Y2/(m-l))
+  return(s2_2)
+}
+.getRankedSingleOverlapIndex <- function(x,y){
+  x_length = as.numeric(length(x))
+  if(round(x_length/2)==x_length/2){
+    k=x_length/2
+  }else{
+    k=(x_length+1)/2
+  }
+  y_length = as.numeric(length(y))
+  x = sort(x)
+  xy_ranks = rank(c(x,y))
+  x_rank = xy_ranks[1:x_length]
+  y_rank = xy_ranks[(x_length+1):(x_length+y_length)]
+  rank_gtm = sum(x_rank[(k+1) : x_length])
+  rank_stm = sum(x_rank[1:k])
+  K= sum(rank(x)[1:k])
+  c = 2/((x_length)*(y_length)) * ( - x_length*(x_length+1) + K*4)  
+  overlap_ranked = 2*(rank_gtm - rank_stm)/((x_length)*(y_length)) + c/2
+  return(overlap_ranked)
+}
+.geo.mean <- function (x){
+  n<-length(x) 
+  mittelwert<-prod(x)^(1/n) 
+  return (mittelwert)
+}
