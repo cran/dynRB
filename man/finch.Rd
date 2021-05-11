@@ -32,9 +32,7 @@ Snodgrass R and Heller E (1904) Papers from the Hopkins-Stanford Galapagos Exped
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}
-\note{
-A tutorial that introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows how to visualize the results can be found here: \href{https://tinyurl.com/y7xgdeq7}{Tutorial dynRB}
-}
+
 \examples{
 data(finch)
 ## quick overview
