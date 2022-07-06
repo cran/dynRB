@@ -15,6 +15,7 @@ vignette: >
 ## Abstract
 
 This tutorial demonstrates the use of the R package dynamic range boxes *dynRB* to quantify the size and overlap of *n*-dimensional hypervolumes. It provides information on formatting data for the use in *dynRB*, introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows  how to visualize the results. 
+In what follows we set the function parameter steps = 51 in order to reduce build time of the vignette, however for real world application the default setting is recommended.
 
 ## Required packages
 
@@ -44,7 +45,7 @@ The finch data set contains measurements of nine traits of 146 bird individuals 
 The main function of the package *dynRB* "dynRB_VPa" quantifies the size and the overlap of the *n*-dimensional hypervolumes of two or more objects (e.g. the five finch species in the example data). 
 
 ```{r finch, results = "hide"}
-r <- dynRB_VPa(finch)
+r <- dynRB_VPa(finch, steps = 51)
 ```
 Dynamic range boxes first calculates the size (*vol*) and overlap (*port*) individually for each dimension and then aggregates the dimensions in order to quantify the size and overlap of the *n*-dimensional hypervolumes. Both size and overlap are bounded between 0 and 1, with values near 0 indicating a small size and overlap and near 1 a large size and overlap. Three different aggregation methods are provided:  
 
@@ -71,7 +72,7 @@ Colums "vol_V1_prod", "vol_V1_mean", and "vol_V1_gmean" give the size *vol(V1)* 
 The function of the package *dynRB* "dynRB_Pn" quantifies the overlap per dimension of the *n*-dimensional hypervolumes of two or more objects (e.g. the five finches in the example data). 
 
 ```{r result3, results = "hide"}
-r <- dynRB_Pn(finch)
+r <- dynRB_Pn(finch, steps = 51)
 ```
 ```{r result31}
 head(r$result)
@@ -84,7 +85,7 @@ Columns V1 and V2 denote the species pair considered. The following columns give
 The function of the package *dynRB* "dynRB_Vn" quantifies the size per dimension of the *n*-dimensional hypervolume for each of the objects (e.g. the five finches in the example data). 
 
 ```{r result4, results = "hide"}
-r <- dynRB_Vn(finch)
+r <- dynRB_Vn(finch, steps = 51)
 ```
 ```{r result41}
 head(r$result)
@@ -97,7 +98,7 @@ Column V1 denotes the species considered. The following columns give the size *v
 Many follow-up analyses may require another data format as the one provided by *dynRB*. Often matrices are required with the groups as row and column names and the pairwise overlap as entries in the cells. 
 
 ```{r result5, results = "hide"}
-r <- dynRB_VPa(finch)
+r <- dynRB_VPa(finch, steps = 51)
 # aggregation method product  
 om1 <- reshape(r$result[,1:3], direction="wide", idvar="V1", timevar="V2") 
 #aggregation method mean  
@@ -117,7 +118,7 @@ Each element in this matrix is identified by its row number, which corresponds t
 One example to analyze the output of dynamic range boxes is to evaluate the asymmetry of overlaps using a Mantel test. Therefore, the lower half of the matrix generated from the output of *dynRB* needs to be correlated with the upper half of the same matrix. 
 
 ```{r plot1, results = "hide", fig.width=7, fig.height=5, message=FALSE, warning=FALSE}
-r <- dynRB_VPa(finch)
+r <- dynRB_VPa(finch, steps = 51)
 #aggregation method mean  
 om <- reshape(r$result[,c(1,2,4)], direction="wide", idvar="V1", timevar="V2") 
 mantel(as.dist(om[2:ncol(om)]), as.dist(t(om[2:ncol(om)])), permutations = 1000)
@@ -131,7 +132,7 @@ The result of the Mantel test shows that overlaps *port(V1, V2)* and *port(V2, V
 Pairwise overlaps can be visualized as a heatmap (see examples in Junker *et al.* 2016; Kuppler *et al.* 2017; Junker & Larue-Kontic 2018). 
 
 ```{r plot2, results = "hide", fig.width=6, fig.height=4}
-r <- dynRB_VPa(finch)  #main function of dynRB to calculate size and overlap of hypervolumes
+r <- dynRB_VPa(finch, steps = 51)  #main function of dynRB to calculate size and overlap of hypervolumes
 result <- r$result
 Overlap <- as.numeric(ifelse(result$V1 == result$V2, "NA", result$port_prod))  
 # 'result$port_prod' may be changed to 'result$port_mean' or 'result$port_gmean'
@@ -146,7 +147,7 @@ In this example the hypervolumes of only one species pair do overlap, the remain
 The following code will result in a similar heatmap with customized settings: 
 
 ```{r plot3, results = "hide", fig.width=6, fig.height=4}
-r <- dynRB_VPa(finch)  
+r <- dynRB_VPa(finch, steps = 51)  
 theme_change <- theme(
   plot.background = element_blank(),
   panel.grid.minor = element_blank(),
