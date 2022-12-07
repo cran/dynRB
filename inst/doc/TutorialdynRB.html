@@ -11,23 +11,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2022-07-06" />
+<meta name="date" content="2022-12-07" />
 
 <title>Quantification of size and overlap of n-dimensional hypervolumes in R: dynRB tutorial</title>
 
-<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
-// be compatible with the behavior of Pandoc < 2.8).
-document.addEventListener('DOMContentLoaded', function(e) {
-  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
-  var i, h, a;
-  for (i = 0; i < hs.length; i++) {
-    h = hs[i];
-    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
-    a = h.attributes;
-    while (a.length > 0) h.removeAttribute(a[0].name);
-  }
-});
-</script>
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -37,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function(e) {
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
-
 
 
 <style type="text/css">
@@ -139,187 +126,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; } 
-code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -331,68 +138,33 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Quantification of size and overlap of
-<em>n</em>-dimensional hypervolumes in R: <em>dynRB</em> tutorial</h1>
-<h4 class="author"><div class="line-block">Robert R.
-Junker<sup>1,</sup>*, Jonas Kuppler<sup>1,2</sup>, Arne
-C.Bathke<sup>3</sup>, Manuela L. Schreyer<sup>3</sup>, Wolfgang
-Trutschnig<sup>3</sup></div>
-<div class="line-block"><sup>1</sup>Department of Bioscience, University
-of Salzburg, Salzburg, Austria; <sup>2</sup>Institute of Evolutionary
-Ecology and Conservation Genomics, University of Ulm, Ulm, Germany;
-<sup>3</sup>Department for Mathematics, University of Salzburg,
-Salzburg, Austria</div></h4>
-<h4 class="date">2022-07-06</h4>
+<h1 class="title toc-ignore">Quantification of size and overlap of <em>n</em>-dimensional hypervolumes in R: <em>dynRB</em> tutorial</h1>
+<h4 class="author"><div class="line-block">Robert R. Junker<sup>1,</sup>*, Jonas Kuppler<sup>1,2</sup>, Arne C.Bathke<sup>3</sup>, Manuela L. Schreyer<sup>3</sup>, Wolfgang Trutschnig<sup>3</sup></div>
+<div class="line-block"><sup>1</sup>Department of Bioscience, University of Salzburg, Salzburg, Austria; <sup>2</sup>Institute of Evolutionary Ecology and Conservation Genomics, University of Ulm, Ulm, Germany; <sup>3</sup>Department for Mathematics, University of Salzburg, Salzburg, Austria</div></h4>
+<h4 class="date">2022-12-07</h4>
 
 
 
 <div id="abstract" class="section level2">
 <h2>Abstract</h2>
-<p>This tutorial demonstrates the use of the R package dynamic range
-boxes <em>dynRB</em> to quantify the size and overlap of
-<em>n</em>-dimensional hypervolumes. It provides information on
-formatting data for the use in <em>dynRB</em>, introduces the functions
-implemented in the package, explains the outputs, gives examples on how
-to use the output for follow-up analyses, and finally shows how to
-visualize the results. In what follows we set the function parameter
-steps = 51 in order to reduce build time of the vignette, however for
-real world application the default setting is recommended.</p>
+<p>This tutorial demonstrates the use of the R package dynamic range boxes <em>dynRB</em> to quantify the size and overlap of <em>n</em>-dimensional hypervolumes. It provides information on formatting data for the use in <em>dynRB</em>, introduces the functions implemented in the package, explains the outputs, gives examples on how to use the output for follow-up analyses, and finally shows how to visualize the results. In what follows we set the function parameter steps = 51 in order to reduce build time of the vignette, however for real world application the default setting is recommended.</p>
 </div>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
-<p>The quantification of size and overlap of <em>n</em>-dimensional
-hypervolumes requires the package <em>dynRB</em> (a detailed description
-of the method can be found in Junker <em>et al.</em> 2016).
-Additionally, the packages <em>ggplot2</em>, <em>reshape2</em>,
-<em>vegan</em>, and <em>RColorBrewer</em> are required for follow-up
-analyses demonstrated in this tutorial.</p>
+<p>The quantification of size and overlap of <em>n</em>-dimensional hypervolumes requires the package <em>dynRB</em> (a detailed description of the method can be found in Junker <em>et al.</em> 2016). Additionally, the packages <em>ggplot2</em>, <em>reshape2</em>, <em>vegan</em>, and <em>RColorBrewer</em> are required for follow-up analyses demonstrated in this tutorial.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dynRB)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span></code></pre></div>
+<pre><code>## Warning: Paket &#39;vegan&#39; wurde unter R Version 4.1.3 erstellt</code></pre>
+<pre><code>## Warning: Paket &#39;permute&#39; wurde unter R Version 4.1.3 erstellt</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div>
 </div>
 <div id="formatting-data-for-use-in-dynrb" class="section level2">
 <h2>Formatting data for use in <em>dynRB</em></h2>
-<p>The grouping variable (e.g. species) is required to be in the first
-column of the data table, followed by two or more columns containing
-continuous variables representing the different dimensions of the
-<em>n</em>-dimensional hypervolume. Thus, each row contains the
-measurements of one unit of interest (e.g. an individual of a species)
-in column 2 and the following columns as well as the grouping variable
-for this unit (first column). <em>dynRB</em> does not require complete
-measurements of all continuous variables in each row; missing values
-(i.e. NA) are omitted during the analysis. The package <em>dynRB</em>
-provides an example data set “finch”“, which serves as a reference.
-The”finch” data set includes morphological measurements of Darwin
-finches <em>Geospiza</em> sp., which originates from Snodgrass and
-Heller (1904) and was extracted from the R package <em>hypervolume</em>
-(Blonder <em>et al.</em> 2014). It comprises quantitative measurements
-of nine traits characterizing five (sub-) species of finches, each trait
-was measured at least in 10 individuals per species (see also Junker
-<em>et al.</em> 2016).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(finch)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(finch)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<p>The grouping variable (e.g. species) is required to be in the first column of the data table, followed by two or more columns containing continuous variables representing the different dimensions of the <em>n</em>-dimensional hypervolume. Thus, each row contains the measurements of one unit of interest (e.g. an individual of a species) in column 2 and the following columns as well as the grouping variable for this unit (first column). <em>dynRB</em> does not require complete measurements of all continuous variables in each row; missing values (i.e. NA) are omitted during the analysis. The package <em>dynRB</em> provides an example data set “finch”“, which serves as a reference. The”finch” data set includes morphological measurements of Darwin finches <em>Geospiza</em> sp., which originates from Snodgrass and Heller (1904) and was extracted from the R package <em>hypervolume</em> (Blonder <em>et al.</em> 2014). It comprises quantitative measurements of nine traits characterizing five (sub-) species of finches, each trait was measured at least in 10 individuals per species (see also Junker <em>et al.</em> 2016).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(finch)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(finch)[,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>##               Species BodyL WingL TailL BeakW
 ## 1 Geospiza_heliobates   123  72.0  48.5   6.5
 ## 2 Geospiza_heliobates   126  70.0  48.5   7.0
@@ -400,55 +172,20 @@ was measured at least in 10 individuals per species (see also Junker
 ## 4 Geospiza_heliobates   127  69.0  39.0   6.5
 ## 5 Geospiza_heliobates   122  71.0  42.0   6.7
 ## 6 Geospiza_heliobates   128  72.0  43.0   6.5</code></pre>
-<p>The finch data set contains measurements of nine traits of 146 bird
-individuals belonging to five species. For a weighted analysis putting
-more weight on some individuals than on others, these individuals need
-to appear in two or more rows of the data table (compare to Kuppler
-<em>et al.</em> 2017; Junker &amp; Larue-Kontic 2018). For instance, in
-Junker &amp; Larue-Kontic (2018) we quantified the size and overlap of
-the trait spaces occupied by plant communities with plant traits as
-dimensions. In order to consider the abundances of the plant species
-within each of the communities, trait-data of each species was inserted
-in a number of rows proportional to the abundance of the species in the
-community. Let us assume species A has an abundance of 10 individuals
-and species B 20 individuals in the same community; in this case
-trait-data of species A would appear in 10 rows and those of species B
-in 20 rows.</p>
+<p>The finch data set contains measurements of nine traits of 146 bird individuals belonging to five species. For a weighted analysis putting more weight on some individuals than on others, these individuals need to appear in two or more rows of the data table (compare to Kuppler <em>et al.</em> 2017; Junker &amp; Larue-Kontic 2018). For instance, in Junker &amp; Larue-Kontic (2018) we quantified the size and overlap of the trait spaces occupied by plant communities with plant traits as dimensions. In order to consider the abundances of the plant species within each of the communities, trait-data of each species was inserted in a number of rows proportional to the abundance of the species in the community. Let us assume species A has an abundance of 10 individuals and species B 20 individuals in the same community; in this case trait-data of species A would appear in 10 rows and those of species B in 20 rows.</p>
 </div>
 <div id="quantification-of-size-and-overlap-of-n-dimensional-hypervolumes" class="section level2">
-<h2>Quantification of size and overlap of <em>n</em>-dimensional
-hypervolumes</h2>
-<p>The main function of the package <em>dynRB</em> “dynRB_VPa”
-quantifies the size and the overlap of the <em>n</em>-dimensional
-hypervolumes of two or more objects (e.g. the five finch species in the
-example data).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span></code></pre></div>
-<p>Dynamic range boxes first calculates the size (<em>vol</em>) and
-overlap (<em>port</em>) individually for each dimension and then
-aggregates the dimensions in order to quantify the size and overlap of
-the <em>n</em>-dimensional hypervolumes. Both size and overlap are
-bounded between 0 and 1, with values near 0 indicating a small size and
-overlap and near 1 a large size and overlap. Three different aggregation
-methods are provided:</p>
+<h2>Quantification of size and overlap of <em>n</em>-dimensional hypervolumes</h2>
+<p>The main function of the package <em>dynRB</em> “dynRB_VPa” quantifies the size and the overlap of the <em>n</em>-dimensional hypervolumes of two or more objects (e.g. the five finch species in the example data).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span></code></pre></div>
+<p>Dynamic range boxes first calculates the size (<em>vol</em>) and overlap (<em>port</em>) individually for each dimension and then aggregates the dimensions in order to quantify the size and overlap of the <em>n</em>-dimensional hypervolumes. Both size and overlap are bounded between 0 and 1, with values near 0 indicating a small size and overlap and near 1 a large size and overlap. Three different aggregation methods are provided:</p>
 <ul>
-<li><p>Product: size and overlap of each of the dimensions are
-multiplied. Hypervolumes become zero if size or overlap is zero in one
-of the dimensions. The size and overlap are dependent on the number of
-dimensions and thus, size and overlap of hypervolumes based on different
-number of dimensions are not comparable.</p></li>
-<li><p>Mean: the mean size and overlap of the dimensions. Hypervolumes
-do not become zero if size or overlap is zero in one of the dimensions.
-The size and overlap are not biased by the number of dimensions and thus
-comparable between hypervolumes with different numbers of
-dimensions.</p></li>
-<li><p>Gmean: the geometric mean size and overlap of the dimensions.
-Hypervolumes become zero if size or overlap is zero in one of the
-dimensions. The size and overlap are not biased by the number of
-dimensions and thus comparable between hypervolumes with different
-numbers of dimensions.</p></li>
+<li><p>Product: size and overlap of each of the dimensions are multiplied. Hypervolumes become zero if size or overlap is zero in one of the dimensions. The size and overlap are dependent on the number of dimensions and thus, size and overlap of hypervolumes based on different number of dimensions are not comparable.</p></li>
+<li><p>Mean: the mean size and overlap of the dimensions. Hypervolumes do not become zero if size or overlap is zero in one of the dimensions. The size and overlap are not biased by the number of dimensions and thus comparable between hypervolumes with different numbers of dimensions.</p></li>
+<li><p>Gmean: the geometric mean size and overlap of the dimensions. Hypervolumes become zero if size or overlap is zero in one of the dimensions. The size and overlap are not biased by the number of dimensions and thus comparable between hypervolumes with different numbers of dimensions.</p></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> r<span class="sc">$</span>result</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>res[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> r<span class="sc">$</span>result</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>res[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>##                                   V1                           V2  port_prod
 ## 1             Geospiza_fortis_fortis       Geospiza_fortis_fortis 1.00000000
 ## 2       Geospiza_fortis_platyrhyncha       Geospiza_fortis_fortis 0.04410616
@@ -463,17 +200,8 @@ numbers of dimensions.</p></li>
 ## 4 0.4433622  0.0000000
 ## 5 0.1493107  0.0000000
 ## 6 0.7359027  0.7403640</code></pre>
-<p>Columns V1 and V2 denote the species pair considered. Columns
-“port_prod”, “port_mean”, and “port_gmean” contain the overlap of the
-hypervolumes of the species given in the first two columns (considering
-the afore-mentioned aggregation methods). Thus, each of the three
-columns show the overlap between V1 and V2 expressed as the proportion
-of the hypervolume of V2 that is covered by the hypervolume of V1
-(<em>port(V1, V2)</em>). Since the overlap is expressed as proportion it
-is dependent on the size of the hypervolumes and thus, <em>port(V1,
-V2)</em> is not the same as <em>port(V2, V1)</em> since overlaps are, by
-construction, asymmetric.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>res[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">11</span>)]</span></code></pre></div>
+<p>Columns V1 and V2 denote the species pair considered. Columns “port_prod”, “port_mean”, and “port_gmean” contain the overlap of the hypervolumes of the species given in the first two columns (considering the afore-mentioned aggregation methods). Thus, each of the three columns show the overlap between V1 and V2 expressed as the proportion of the hypervolume of V2 that is covered by the hypervolume of V1 (<em>port(V1, V2)</em>). Since the overlap is expressed as proportion it is dependent on the size of the hypervolumes and thus, <em>port(V1, V2)</em> is not the same as <em>port(V2, V1)</em> since overlaps are, by construction, asymmetric.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>res[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">11</span>)]</span></code></pre></div>
 <pre><code>##                                   V1                           V2  vol_V1_prod
 ## 1             Geospiza_fortis_fortis       Geospiza_fortis_fortis 1.061290e-03
 ## 2       Geospiza_fortis_platyrhyncha       Geospiza_fortis_fortis 5.164404e-04
@@ -488,19 +216,13 @@ construction, asymmetric.</p>
 ## 4   0.6267104    0.5652103 0.0010612901   0.8048758    0.7948846
 ## 5   0.5135105    0.4626482 0.0010612901   0.8048758    0.7948846
 ## 6   0.8048758    0.7948846 0.0005164404   0.7778813    0.7654443</code></pre>
-<p>Colums “vol_V1_prod”, “vol_V1_mean”, and “vol_V1_gmean” give the size
-<em>vol(V1)</em> of the hypervolume of species V1 expressed by the
-different aggregation methods. Colums “vol_V2_prod”, “vol_V2_mean”, and
-“vol_V2_gmean” contain the size <em>vol(V2)</em> of the hypervolume of
-species V2.</p>
+<p>Colums “vol_V1_prod”, “vol_V1_mean”, and “vol_V1_gmean” give the size <em>vol(V1)</em> of the hypervolume of species V1 expressed by the different aggregation methods. Colums “vol_V2_prod”, “vol_V2_mean”, and “vol_V2_gmean” contain the size <em>vol(V2)</em> of the hypervolume of species V2.</p>
 </div>
 <div id="quantification-of-overlaps-per-dimension" class="section level2">
 <h2>Quantification of overlaps per dimension</h2>
-<p>The function of the package <em>dynRB</em> “dynRB_Pn” quantifies the
-overlap per dimension of the <em>n</em>-dimensional hypervolumes of two
-or more objects (e.g. the five finches in the example data).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_Pn</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r<span class="sc">$</span>result)</span></code></pre></div>
+<p>The function of the package <em>dynRB</em> “dynRB_Pn” quantifies the overlap per dimension of the <em>n</em>-dimensional hypervolumes of two or more objects (e.g. the five finches in the example data).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_Pn</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r<span class="sc">$</span>result)</span></code></pre></div>
 <pre><code>##                                   V1                           V2      BodyL
 ## 1             Geospiza_fortis_fortis       Geospiza_fortis_fortis 1.00000000
 ## 2       Geospiza_fortis_platyrhyncha       Geospiza_fortis_fortis 0.15455434
@@ -522,17 +244,13 @@ or more objects (e.g. the five finches in the example data).</p>
 ## 4 0.25649571
 ## 5 0.12335054
 ## 6 0.52400000</code></pre>
-<p>Columns V1 and V2 denote the species pair considered. The following
-columns give the overlap <em>port(V1, V2)</em> for each of the
-dimensions contained in the data set.</p>
+<p>Columns V1 and V2 denote the species pair considered. The following columns give the overlap <em>port(V1, V2)</em> for each of the dimensions contained in the data set.</p>
 </div>
 <div id="quantification-of-sizes-per-dimension" class="section level2">
 <h2>Quantification of sizes per dimension</h2>
-<p>The function of the package <em>dynRB</em> “dynRB_Vn” quantifies the
-size per dimension of the <em>n</em>-dimensional hypervolume for each of
-the objects (e.g. the five finches in the example data).</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_Vn</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r<span class="sc">$</span>result)</span></code></pre></div>
+<p>The function of the package <em>dynRB</em> “dynRB_Vn” quantifies the size per dimension of the <em>n</em>-dimensional hypervolume for each of the objects (e.g. the five finches in the example data).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_Vn</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r<span class="sc">$</span>result)</span></code></pre></div>
 <pre><code>##                                   V1     BodyL     WingL     TailL     BeakW
 ## 1             Geospiza_fortis_fortis 0.4578298 0.4856886 0.6311010 0.2540241
 ## 2       Geospiza_fortis_platyrhyncha 0.4944163 0.2912925 0.4614273 0.5948394
@@ -545,24 +263,19 @@ the objects (e.g. the five finches in the example data).</p>
 ## 3 0.09713766 0.12829627 0.24842846 0.16645777 0.2500555
 ## 4 0.19324772 0.10498779 0.03589303 0.21861312 0.3174346
 ## 5 0.08206582 0.07151052 0.10153781 0.03592394 0.1711066</code></pre>
-<p>Column V1 denotes the species considered. The following columns give
-the size <em>vol(V1)</em> for each of the dimensions contained in the
-data set.</p>
+<p>Column V1 denotes the species considered. The following columns give the size <em>vol(V1)</em> for each of the dimensions contained in the data set.</p>
 </div>
 <div id="transformation-of-the-output-to-matrix-format" class="section level2">
 <h2>Transformation of the output (to matrix format)</h2>
-<p>Many follow-up analyses may require another data format as the one
-provided by <em>dynRB</em>. Often matrices are required with the groups
-as row and column names and the pairwise overlap as entries in the
-cells.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregation method product  </span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>om1 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#aggregation method mean  </span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>om2 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#aggregation method gmean  </span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>om3 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>om1</span></code></pre></div>
+<p>Many follow-up analyses may require another data format as the one provided by <em>dynRB</em>. Often matrices are required with the groups as row and column names and the pairwise overlap as entries in the cells.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregation method product  </span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>om1 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#aggregation method mean  </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>om2 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#aggregation method gmean  </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>om3 <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>)], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>om1</span></code></pre></div>
 <pre><code>##                                   V1 port_prod.Geospiza_fortis_fortis
 ## 1             Geospiza_fortis_fortis                       1.00000000
 ## 2       Geospiza_fortis_platyrhyncha                       0.04410616
@@ -581,105 +294,73 @@ cells.</p>
 ## 3                             0                                            0
 ## 4                             1                                            0
 ## 5                             0                                            1</code></pre>
-<p>Each element in this matrix is identified by its row number, which
-corresponds to one particular group, and its column number, which
-corresponds to another group. For example, om[1,3] refers to the entry
-in the first row and third column of the table. Its interpretation is as
-follows. It is the proportion of the hypervolume of the third column
-group (<em>Geospiza fortis platyrhyncha</em>) that is overlapped by the
-hypervolume of the first row group (<em>Geospiza fortis fortis</em>),
-i.e. <em>port(Geospiza fortis platyrhyncha, Geospiza fortis
-fortis)</em>.</p>
+<p>Each element in this matrix is identified by its row number, which corresponds to one particular group, and its column number, which corresponds to another group. For example, om[1,3] refers to the entry in the first row and third column of the table. Its interpretation is as follows. It is the proportion of the hypervolume of the third column group (<em>Geospiza fortis platyrhyncha</em>) that is overlapped by the hypervolume of the first row group (<em>Geospiza fortis fortis</em>), i.e. <em>port(Geospiza fortis platyrhyncha, Geospiza fortis fortis)</em>.</p>
 </div>
 <div id="evaluation-of-the-asymmetry-in-overlaps" class="section level2">
 <h2>Evaluation of the asymmetry in overlaps</h2>
-<p>One example to analyze the output of dynamic range boxes is to
-evaluate the asymmetry of overlaps using a Mantel test. Therefore, the
-lower half of the matrix generated from the output of <em>dynRB</em>
-needs to be correlated with the upper half of the same matrix.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#aggregation method mean  </span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>om <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mantel</span>(<span class="fu">as.dist</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)]), <span class="fu">as.dist</span>(<span class="fu">t</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)])), <span class="at">permutations =</span> <span class="dv">1000</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dist</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)]), <span class="fu">as.dist</span>(<span class="fu">t</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)]))) </span></code></pre></div>
+<p>One example to analyze the output of dynamic range boxes is to evaluate the asymmetry of overlaps using a Mantel test. Therefore, the lower half of the matrix generated from the output of <em>dynRB</em> needs to be correlated with the upper half of the same matrix.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#aggregation method mean  </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>om <span class="ot">&lt;-</span> <span class="fu">reshape</span>(r<span class="sc">$</span>result[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)], <span class="at">direction=</span><span class="st">&quot;wide&quot;</span>, <span class="at">idvar=</span><span class="st">&quot;V1&quot;</span>, <span class="at">timevar=</span><span class="st">&quot;V2&quot;</span>) </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mantel</span>(<span class="fu">as.dist</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)]), <span class="fu">as.dist</span>(<span class="fu">t</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)])), <span class="at">permutations =</span> <span class="dv">1000</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dist</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)]), <span class="fu">as.dist</span>(<span class="fu">t</span>(om[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(om)]))) </span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
-<p>The result of the Mantel test shows that overlaps <em>port(V1,
-V2)</em> and <em>port(V2, V1)</em> are well correlated, i.e. overlaps
-are largely symmetric.</p>
+<p>The result of the Mantel test shows that overlaps <em>port(V1, V2)</em> and <em>port(V2, V1)</em> are well correlated, i.e. overlaps are largely symmetric.</p>
 </div>
 <div id="visualization-of-overlaps-using-heatmaps" class="section level2">
 <h2>Visualization of overlaps using heatmaps</h2>
-<p>Pairwise overlaps can be visualized as a heatmap (see examples in
-Junker <em>et al.</em> 2016; Kuppler <em>et al.</em> 2017; Junker &amp;
-Larue-Kontic 2018).</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)  <span class="co">#main function of dynRB to calculate size and overlap of hypervolumes</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> r<span class="sc">$</span>result</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Overlap <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">ifelse</span>(result<span class="sc">$</span>V1 <span class="sc">==</span> result<span class="sc">$</span>V2, <span class="st">&quot;NA&quot;</span>, result<span class="sc">$</span>port_prod))  </span></code></pre></div>
-<pre><code>## Warning: NAs durch Umwandlung erzeugt</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;result$port_prod&#39; may be changed to &#39;result$port_mean&#39; or &#39;result$port_gmean&#39;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.numeric</span>(Overlap)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>Result2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(result, Overlap)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Result2, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2)) <span class="sc">+</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2, <span class="sc">!</span><span class="fu">is.na</span>(Overlap)), <span class="fu">aes</span>(<span class="at">fill =</span> Overlap), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2,  <span class="fu">is.na</span>(Overlap)), <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>)</span></code></pre></div>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAGACAIAAADK+EpIAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAgAElEQVR4nO3dfWwb6X0n8C8T27tZ67Lr2LJypZhofJTbeqUmdTcmRJ3Sm9teUsnIRC24ukDX0LgiK5lBUJoHrP8ojYN7MPuHAoQmUJSWEqRY5qDraXk4Z3CWml4XbE8RVW63viTSqq3FmtxQDOKVHe/u2ZuNnXjuj3nh8FXUm8kRvx/oD+p5m98zpPjTPPOIsimKAiIiIqv5QKMDICIi2gomMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisqR9jQ6A6HG7ffv2zg545MiRHR/TomE0Qwx7OIwjR47s4Gh7AK/AiIjIkpjAiIjIkpjAiIjIkpjAiIjIkpjAiIjIkrgLkVpde3t7o0Mgqmp9fb3RITQvJjAiHH72+cYGcOeNVxseA8MoiWFpaamxMQDo7e1tdAhNjUuIRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSbuQwFJhyRBO7fz4hnzcv7sH2AwjmN2OqqlmrWrluRNR4+zb4fFSYSmEoCy7ACAf9/v88WjEY9/ho6jsnoi8KwMTEVHz29kElo9PJ8Sgmr0A2D3nvfMTi3mPmsFSYSmUAAAxKAf0NpUKjbJCYSosJR3ebCyWAQSvmhPzcb8vNyoHYDQ3euTjfl8sg9KDlaky7ESuC4lERu1aT4SpsC+WAUISglEHgGStPkZZPu6fwEBXLJaAenjHjNpED6XaSSuc7wrTrHD2OHci2oN2dAkxvzifEd3mtw27J1J4NwplvVFZlqPebEhfBzIK5SBC/nheK0NQlktaAonY/EBUluVgV8xXtI7kCshac0HwjriAVNinNi0dopJKw2YSGJVlOeCqN0JXIOoVCm+aiaxD7SImptUulacPZGI5tzoQYj4paTyeSdXqpZ+8CtOsdvZafe7PmRwpVvMUETUYX6s17PQ9MMHRWbkilUwIA312AHbPqJhIprRCcVRNcC63mJlfVN/wkM3lAXWN0PRrtNbUNeIVtAZm+fjE/MB5tUVA1tOm3dG1UciVhjXS8OYiLBkSnQ4hk1urOn0AasYF7H0DgvHY0aWNX62Xqto0a8fWonN/3eR2sdqniKix+FqtYafvgWVya4Ad5hUeY00oE/NJMa2d4MjDhVwWcGslnQ5BfeAKRHN+raVpPamQG+2OrkxyDTCnSjV9RQo32wqLSRDdqKH2sJuKsLay6W+tV3F12TQ3FVsrz52ILG9HE5i9b0CIJVMBl0v9HdgDpMLStF5dflvC0YWc/ngtl4FDG0ftC6TC0kS8r/SNKJ/LCo6RopLi9KXvJAlo98nqi758WPW3+y1EWNHW7sqU9SpcelaZ5lZia+W5E5FV7ewSot0zKib0uyUAkErquytcbuOeSCosaU3MhfqKUaG2REa7OZKaiUFdW9KYFg/V73NZmG/FVVhvrGfYsrA3jLCGitPfXq+K09xcbK08dyKyvJ1eQnQF5GjcX1j5EYNyxKXVBJOSWiF4owF7aaEYlLUbWEZRoRAABBHTkhQydwcApGZimQxMi03e6HnvvE+S1E6iYCxrVlRtWGNC9UVo7xsQYsZOvEonpsL0N1Srl91z3usvnWbVs8e5E9FeY1MUpdEx1CMVlqYdO39XY5eGtYTWnXvJzfD29vbDzz7fqGBUd954teExMIySGJaWlhobA4De3t719XXjW25ELLHTV2DNyfQ3QyaCNzraiGger1aeOxHtaVZJYK6AvI0/SzXu7ZfbzrCW0MpzJ6I9jR/mS0RElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElmRTFKXRMRA9Vrdv3zZ/297e3qhIiDa0vr5uPD5y5EgDI2lC+xodAFHjHX72+cYGcOeNVxseQ1OFsbS01NgYent7m+RUNDqEpsYlRCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIi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2y6dWNW+qVqLml3q0PJXYM3J9PdMJhvuvNipo4xub0h4o5Fdak9ETcp5vCd5dRVwAkjfWEbPsHPD2ppd6sArMGo5vAKrhldgTRUDrHUFhnSkv3tmZHXB70xH+rtXLpTtQiyvrd1lY7wCIyKi7XP6F2ZXbN22c4D78urCIKBmKDUvVaqtXLgJTGBERLQjBicVZdJc4PQvKNVrq+1VV4QAABYwSURBVBbWq8W30RMRkVUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSXZFEVpdAxEj9Xt27fN37a3tzcqEqINra+vG4+PHDnSwEia0L5GB0DUeEtLS40NoLe39ze+fKWxMQD4+z89e/jZ5xsdBe688WrDw2iGGNQwGh1CU+MSIhERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITWEOlwpIhnNrFA+Xj/u0eIB/3S5Ik+eP5eo+1lYM+nqMQ0V6wr9EBtLBUWAohKMsuAMjH/T5/PBrx2HflWHZPRN7eCPnF+YwYlAOuXT3o4zkKEe0JTGCNko9PJ8SgrL9T2z3nvfMTi3mPmsFSYSmUAADzu3mlQqOsUJgKS0mHNxuLZQDBq+bEfNzvy43KARjNjR75uN8Xy6D0YMVSYV8sA4SkrDca8djLIsnH/RO5LiQSGa1DSEIw6pj25UbVBhXibNRRiGiP4BJig+QX5zOi2/wWa/dE9OuvVDiU9UZlWY56syF9ecwolIMIaUtsqXAIQVkuaQkkYvMDUVmWg10xX9Hymisga80FwTviAlJhn9q0dIhirkDUK0AMyhGPvWIkQCaBUX3s0vxRLc7Hd5TnTI4UqxIMUVPga7UGJrDGERydlStSyYQw0GcHYPeMiolkSisUR9UE53KLmflF7R09m8sD6kKa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" /><!-- --></p>
-<p>In this example the hypervolumes of only one species pair do overlap,
-the remaining species do not share space in the hypervolume (see also
-Fig. 4 in Junker <em>et al.</em> 2016).<br />
-The following code will result in a similar heatmap with customized
-settings:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)  </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>theme_change <span class="ot">&lt;-</span> <span class="fu">theme</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.background =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.5</span>), <span class="at">angle=</span><span class="dv">35</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.5</span>)),</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> r<span class="sc">$</span>result</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>Overlap <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">ifelse</span>(result<span class="sc">$</span>V1 <span class="sc">==</span> result<span class="sc">$</span>V2, <span class="st">&quot;NA&quot;</span>, result<span class="sc">$</span>port_prod))  </span></code></pre></div>
+<p>Pairwise overlaps can be visualized as a heatmap (see examples in Junker <em>et al.</em> 2016; Kuppler <em>et al.</em> 2017; Junker &amp; Larue-Kontic 2018).</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)  <span class="co">#main function of dynRB to calculate size and overlap of hypervolumes</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> r<span class="sc">$</span>result</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Overlap <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">ifelse</span>(result<span class="sc">$</span>V1 <span class="sc">==</span> result<span class="sc">$</span>V2, <span class="st">&quot;NA&quot;</span>, result<span class="sc">$</span>port_prod))  </span></code></pre></div>
 <pre><code>## Warning: NAs durch Umwandlung erzeugt</code></pre>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;result$port_prod&#39; may be changed to &#39;result$port_mean&#39; or &#39;result$port_gmean&#39;</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.numeric</span>(Overlap)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>Result2<span class="ot">&lt;-</span><span class="fu">cbind</span>(result, Overlap)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="fu">max</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>),  </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">round</span>(<span class="fu">max</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">10</span>, <span class="at">digits=</span><span class="dv">3</span>))</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>col1 <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;navyblue&quot;</span>)) <span class="co">#define color gradient</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Result2, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2)) <span class="sc">+</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2, <span class="sc">!</span><span class="fu">is.na</span>(Overlap)), <span class="fu">aes</span>(<span class="at">fill =</span> Overlap), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2,  <span class="fu">is.na</span>(Overlap)), <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">col1</span>(<span class="dv">8</span>), <span class="at">breaks=</span>breaks, <span class="at">guide=</span><span class="st">&quot;colorbar&quot;</span>,  </span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits=</span><span class="fu">c</span>(<span class="fu">min</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="fu">max</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>))) <span class="sc">+</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  theme_change</span></code></pre></div>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>Result2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(result, Overlap)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Result2, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2)) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2, <span class="sc">!</span><span class="fu">is.na</span>(Overlap)), <span class="fu">aes</span>(<span class="at">fill =</span> Overlap), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2,  <span class="fu">is.na</span>(Overlap)), <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAGACAIAAADK+EpIAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAgAElEQVR4nO3dfWwb6X0n8C8T27tZ67Lr2LJypZhofJTbeqUmdTcmRJ3Sm9teUsnIRC24ukDX0LgiK5lBUJoHrP8ojYN7MPuHAoQmUJSWEqRY5qDraXk4Z3CWml4XbE8RVW63viTSqq3FmtxQDOKVHe/u2ZuNnXjuj3nh8FXUm8kRvx/oD+p5m98zpPjTPPOIsimKAiIiIqv5QKMDICIi2gomMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisqR9jQ6A6HG7ffv2zg545MiRHR/TomE0Qwx7OIwjR47s4Gh7AK/AiIjIkpjAiIjIkpjAiIjIkpjAiIjIkpjAiIjIkrgLkVpde3t7o0Mgqmp9fb3RITQvJjAiHH72+cYGcOeNVxseA8MoiWFpaamxMQDo7e1tdAhNjUuIRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSbuQwFJhyRBO7fz4hnzcv7sH2AwjmN2OqqlmrWrluRNR4+zb4fFSYSmEoCy7ACAf9/v88WjEY9/ho6jsnoi8KwMTEVHz29kElo9PJ8Sgmr0A2D3nvfMTi3mPmsFSYSmUAAAxKAf0NpUKjbJCYSosJR3ebCyWAQSvmhPzcb8vNyoHYDQ3euTjfl8sg9KDlaky7ESuC4lERu1aT4SpsC+WAUISglEHgGStPkZZPu6fwEBXLJaAenjHjNpED6XaSSuc7wrTrHD2OHci2oN2dAkxvzifEd3mtw27J1J4NwplvVFZlqPebEhfBzIK5SBC/nheK0NQlktaAonY/EBUluVgV8xXtI7kCshac0HwjriAVNinNi0dopJKw2YSGJVlOeCqN0JXIOoVCm+aiaxD7SImptUulacPZGI5tzoQYj4paTyeSdXqpZ+8CtOsdvZafe7PmRwpVvMUETUYX6s17PQ9MMHRWbkilUwIA312AHbPqJhIprRCcVRNcC63mJlfVN/wkM3lAXWN0PRrtNbUNeIVtAZm+fjE/MB5tUVA1tOm3dG1UciVhjXS8OYiLBkSnQ4hk1urOn0AasYF7H0DgvHY0aWNX62Xqto0a8fWonN/3eR2sdqniKix+FqtYafvgWVya4Ad5hUeY00oE/NJMa2d4MjDhVwWcGslnQ5BfeAKRHN+raVpPamQG+2OrkxyDTCnSjV9RQo32wqLSRDdqKH2sJuKsLay6W+tV3F12TQ3FVsrz52ILG9HE5i9b0CIJVMBl0v9HdgDpMLStF5dflvC0YWc/ngtl4FDG0ftC6TC0kS8r/SNKJ/LCo6RopLi9KXvJAlo98nqi758WPW3+y1EWNHW7sqU9SpcelaZ5lZia+W5E5FV7ewSot0zKib0uyUAkErquytcbuOeSCosaU3MhfqKUaG2REa7OZKaiUFdW9KYFg/V73NZmG/FVVhvrGfYsrA3jLCGitPfXq+K09xcbK08dyKyvJ1eQnQF5GjcX1j5EYNyxKXVBJOSWiF4owF7aaEYlLUbWEZRoRAABBHTkhQydwcApGZimQxMi03e6HnvvE+S1E6iYCxrVlRtWGNC9UVo7xsQYsZOvEonpsL0N1Srl91z3usvnWbVs8e5E9FeY1MUpdEx1CMVlqYdO39XY5eGtYTWnXvJzfD29vbDzz7fqGBUd954teExMIySGJaWlhobA4De3t719XXjW25ELLHTV2DNyfQ3QyaCNzraiGger1aeOxHtaVZJYK6AvI0/SzXu7ZfbzrCW0MpzJ6I9jR/mS0RElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElsQERkRElmRTFKXRMRA9Vrdv3zZ/297e3qhIiDa0vr5uPD5y5EgDI2lC+xodAFHjHX72+cYGcOeNVxseQ1OFsbS01NgYent7m+RUNDqEpsYlRCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIisiQmMCIi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2y6dWNW+qVqLml3q0PJXYM3J9PdMJhvuvNipo4xub0h4o5Fdak9ETcp5vCd5dRVwAkjfWEbPsHPD2ppd6sArMGo5vAKrhldgTRUDrHUFhnSkv3tmZHXB70xH+rtXLpTtQiyvrd1lY7wCIyKi7XP6F2ZXbN22c4D78urCIKBmKDUvVaqtXLgJTGBERLQjBicVZdJc4PQvKNVrq+1VV4QAABYwSURBVBbWq8W30RMRkVUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSUxgRERkSXZFEVpdAxEj9Xt27fN37a3tzcqEqINra+vG4+PHDnSwEia0L5GB0DUeEtLS40NoLe39ze+fKWxMQD4+z89e/jZ5xsdBe688WrDw2iGGNQwGh1CU+MSIhERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITGBERWRITWEOlwpIhnNrFA+Xj/u0eIB/3S5Ik+eP5eo+1lYM+nqMQ0V6wr9EBtLBUWAohKMsuAMjH/T5/PBrx2HflWHZPRN7eCPnF+YwYlAOuXT3o4zkKEe0JTGCNko9PJ8SgrL9T2z3nvfMTi3mPmsFSYSmUAADzu3mlQqOsUJgKS0mHNxuLZQDBq+bEfNzvy43KARjNjR75uN8Xy6D0YMVSYV8sA4SkrDca8djLIsnH/RO5LiQSGa1DSEIw6pj25UbVBhXibNRRiGiP4BJig+QX5zOi2/wWa/dE9OuvVDiU9UZlWY56syF9ecwolIMIaUtsqXAIQVkuaQkkYvMDUVmWg10xX9Hymisga80FwTviAlJhn9q0dIhirkDUK0AMyhGPvWIkQCaBUX3s0vxRLc7Hd5TnTI4UqxIMUVPga7UGJrDGERydlStSyYQw0GcHYPeMiolkSisUR9UE53KLmflF7R09m8sD6kKa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" /><!-- --></p>
+<p>In this example the hypervolumes of only one species pair do overlap, the remaining species do not share space in the hypervolume (see also Fig. 4 in Junker <em>et al.</em> 2016).<br />
+The following code will result in a similar heatmap with customized settings:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">dynRB_VPa</span>(finch, <span class="at">steps =</span> <span class="dv">51</span>)  </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>theme_change <span class="ot">&lt;-</span> <span class="fu">theme</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.5</span>), <span class="at">angle=</span><span class="dv">35</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.5</span>)),</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> r<span class="sc">$</span>result</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>Overlap <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">ifelse</span>(result<span class="sc">$</span>V1 <span class="sc">==</span> result<span class="sc">$</span>V2, <span class="st">&quot;NA&quot;</span>, result<span class="sc">$</span>port_prod))  </span></code></pre></div>
+<pre><code>## Warning: NAs durch Umwandlung erzeugt</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;result$port_prod&#39; may be changed to &#39;result$port_mean&#39; or &#39;result$port_gmean&#39;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.numeric</span>(Overlap)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>Result2<span class="ot">&lt;-</span><span class="fu">cbind</span>(result, Overlap)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="fu">max</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>),  </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">by=</span><span class="fu">round</span>(<span class="fu">max</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">10</span>, <span class="at">digits=</span><span class="dv">3</span>))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>col1 <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;navyblue&quot;</span>)) <span class="co">#define color gradient</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Result2, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2)) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2, <span class="sc">!</span><span class="fu">is.na</span>(Overlap)), <span class="fu">aes</span>(<span class="at">fill =</span> Overlap), <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data =</span> <span class="fu">subset</span>(Result2,  <span class="fu">is.na</span>(Overlap)), <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">col1</span>(<span class="dv">8</span>), <span class="at">breaks=</span>breaks, <span class="at">guide=</span><span class="st">&quot;colorbar&quot;</span>,  </span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits=</span><span class="fu">c</span>(<span class="fu">min</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="fu">max</span>(Overlap, <span class="at">na.rm=</span><span class="cn">TRUE</span>))) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  theme_change</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<p>Blonder, B., Lamanna, C., Violle, C. &amp; Enquist, B.J. (2014) The
-<em>n</em>-dimensional hypervolume. <em>Global Ecology and
-Biogeography</em>, 23, 595-609.</p>
-<p>Junker, R.R., Kuppler, J., Bathke, A., Schreyer, M.L. &amp;
-Trutschnig, W. (2016) Dynamic range boxes - A robust non-parametric
-approach to quantify the size and overlap of niches and trait-spaces in
-n-dimensional hypervolumes <em>Methods in Ecology and Evolution</em>, 7,
-1503-1513.</p>
-<p>Junker, R.R. &amp; Larue-Kontic, A. (2018) Elevation predicts the
-functional composition of alpine plant communities based on vegetative
-traits, but not based on floral traits. <em>Alpine Botany</em>.</p>
-<p>Kuppler, J., MK, H., Trutschnig, W., Bathke, A., Eiben, J., Daehler,
-C. &amp; Junker, R. (2017) Exotic flower visitors exploit large floral
-trait spaces resulting in asymmetric resource partitioning with native
-visitors. <em>Functional Ecology</em>, 31, 2244-2254.</p>
-<p>Snodgrass, R. &amp; Heller, E. (1904) Papers from the
-Hopkins-Stanford Galapagos Expedition, 1898-99. XVI. Birds.
-<em>Proceedings of the Washington Academy of Sciences</em>, 5,
-231-372.</p>
+<p>Blonder, B., Lamanna, C., Violle, C. &amp; Enquist, B.J. (2014) The <em>n</em>-dimensional hypervolume. <em>Global Ecology and Biogeography</em>, 23, 595-609.</p>
+<p>Junker, R.R., Kuppler, J., Bathke, A., Schreyer, M.L. &amp; Trutschnig, W. (2016) Dynamic range boxes - A robust non-parametric approach to quantify the size and overlap of niches and trait-spaces in n-dimensional hypervolumes <em>Methods in Ecology and Evolution</em>, 7, 1503-1513.</p>
+<p>Junker, R.R. &amp; Larue-Kontic, A. (2018) Elevation predicts the functional composition of alpine plant communities based on vegetative traits, but not based on floral traits. <em>Alpine Botany</em>.</p>
+<p>Kuppler, J., MK, H., Trutschnig, W., Bathke, A., Eiben, J., Daehler, C. &amp; Junker, R. (2017) Exotic flower visitors exploit large floral trait spaces resulting in asymmetric resource partitioning with native visitors. <em>Functional Ecology</em>, 31, 2244-2254.</p>
+<p>Snodgrass, R. &amp; Heller, E. (1904) Papers from the Hopkins-Stanford Galapagos Expedition, 1898-99. XVI. Birds. <em>Proceedings of the Washington Academy of Sciences</em>, 5, 231-372.</p>
 </div>
 
 

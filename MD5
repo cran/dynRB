@@ -1,4 +1,4 @@
-0e6e899dd9aebfb3c2fc04a75682335f *DESCRIPTION
+f3f97e107d767eee7e6bf0a54fee4afe *DESCRIPTION
 541426f202a239826d6b1b04aa1a4d91 *NAMESPACE
 744f5c2b7c9daac0300ca44ddb262eb9 *R/dynRB-internal.R
 faab76d6435b39a80073fba7b4995cf5 *R/dynRB_Pn.R
@@ -6,12 +6,12 @@ ce2e82d67cef3328eddb85d426fdf590 *R/dynRB_VPa.R
 6f78c6c1f4fd47461ed7febd4d6a099b *R/dynRB_Vn.R
 379f7964a63f645a53917c8c4580e13a *R/overview.R
 e4e033c91d5dad091f45338de3089712 *R/ranks_OV.R
-75fc540e7cdbe843be7debe8eef9a731 *build/vignette.rds
+3cc8af509a51807d33a71872eeb67043 *build/vignette.rds
 3177064b2bf2e8a48bb4a4ae1f6829e1 *data/finch.rda
 3f63af4d253a0c0b2a3ca649b6890feb *data/finch2.rda
 4398b4b4a038c97268c6041b118e24fc *inst/doc/TutorialdynRB.R
 b232b32dcb175794758511a58d7bfc9b *inst/doc/TutorialdynRB.Rmd
-4e5bfe9f4d6a8aed12e22173f1ff781c *inst/doc/TutorialdynRB.html
+44017ee7a28330423f75765672f96432 *inst/doc/TutorialdynRB.html
 8b19ea8ec1ccdbb85e6c2d250d0a247c *inst/unitTests/test_dynRB_Pn.R
 8ae2e0c3df2bdb06ad8bd909fa52dded *inst/unitTests/test_dynRB_VPa.R
 413b224537d554b14879f20630befa15 *inst/unitTests/test_dynRB_Vn.R
